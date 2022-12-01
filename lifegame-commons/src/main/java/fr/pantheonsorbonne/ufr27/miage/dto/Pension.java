@@ -1,18 +1,20 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public class Pension {
+import java.io.Serializable;
 
-    double amount;
+public class Pension implements Serializable {
 
-    public Pension(double amount) {
+    int amount;
+
+    public Pension(int amount) {
         this.amount = amount;
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 }

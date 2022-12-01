@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.BankAccountDAO;
+import fr.pantheonsorbonne.ufr27.miage.dto.Pension;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -12,7 +13,7 @@ public class BankingServiceImpl implements BankingService {
     BankAccountDAO bankAccountDAO;
 
     @Override
-    public void creditBankAccount(int pension) {
-        bankAccountDAO.creditBankAccount(pension);
+    public void creditBankAccount(Pension pension) {
+        bankAccountDAO.creditBankAccount(pension.getAmount());
     }
 }

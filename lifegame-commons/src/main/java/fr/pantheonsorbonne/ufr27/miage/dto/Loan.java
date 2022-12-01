@@ -1,24 +1,29 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-import java.io.Serializable;
+public class Loan {
 
-public class Loan implements Serializable {
+    int villagerId;
 
     int loanAmount;
 
-    String status;
+    LoanStatus status;
 
-    int loanId;
-
-    public Loan(int loanAmount, String status, int loanId) {
+    public Loan(int villagerId, int loanAmount, LoanStatus status) {
+        this.villagerId = villagerId;
         this.loanAmount = loanAmount;
         this.status = status;
-        this.loanId = loanId;
     }
 
     public Loan() {
     }
 
+    public int getVillagerId() {
+        return villagerId;
+    }
+
+    public void setVillagerId(int villagerId) {
+        this.villagerId = villagerId;
+    }
 
     public int getLoanAmount() {
         return loanAmount;
@@ -28,19 +33,11 @@ public class Loan implements Serializable {
         this.loanAmount = loanAmount;
     }
 
-    public String getStatus() {
+    public LoanStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(LoanStatus status) {
         this.status = status;
-    }
-
-    public int getLoanId() {
-        return loanId;
-    }
-
-    public void setLoanId(int loanId) {
-        this.loanId = loanId;
     }
 }

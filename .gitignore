@@ -40,3 +40,5 @@ nb-configuration.xml
 .envrc
 
 tom-nook/src/main/resources/application.properties
+
+tom-nook/src/main/resources/application.properties

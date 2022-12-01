@@ -63,13 +63,6 @@ public class CamelRoutes extends RouteBuilder {
                 .setBody(simple("No seat is available"));
 
 
-        from("jms:" + jmsPrefix + "booking?exchangePattern=InOut")//
-                .log("ticker received: ${in.headers}")//
-                .unmarshal().json(Booking.class)//
-                .bean(bookingHandler, "book").marshal().json()
-        ;
-
-
         from("jms:" + jmsPrefix + "ticket?exchangePattern=InOut")
                 .unmarshal().json(ETicket.class)
                 .bean(ticketingService, "emitTicket").marshal().json();

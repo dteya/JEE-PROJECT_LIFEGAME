@@ -1,14 +1,22 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "villager")
+@Table(name = "Villager")
 public class Villager {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @Size(max = 36)
+    @Column(name = "name", length = 36)
+    private String name;
+
+    @Column(name = "level")
+    private Integer level;
 
     public Integer getId() {
         return id;
@@ -18,10 +26,6 @@ public class Villager {
         this.id = id;
     }
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-
     public String getName() {
         return name;
     }
@@ -29,4 +33,13 @@ public class Villager {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
 }

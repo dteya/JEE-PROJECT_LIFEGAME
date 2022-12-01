@@ -1,8 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
+import fr.pantheonsorbonne.ufr27.miage.exception.NegativeOrZeroPensionException;
 import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NegativeOrZero;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,7 +18,10 @@ public class BankRessource {
 
     @Path("/pension/{value}")
     @POST
-    public void emitPension(@PathParam("value") int pensionValue) {
+    public void emitPension(@PathParam("value") int pensionValue) throws NegativeOrZeroPensionException {
+        if (pensionValue <= 0) {
+            throw new NegativeOrZeroPensionException(pensionValue);
+        }
             bankingService.emitPension(pensionValue);
     }
 

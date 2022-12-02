@@ -11,14 +11,14 @@ import javax.persistence.*;
                 query="SELECT l FROM Loan l"
         ),
         @NamedQuery(
-                name="Loan.updateStatus",
-                query="UPDATE Loan SET loanStatus = :loanStatus WHERE id = :loanId"
+                name="Loan.findOne",
+                query="SELECT l FROM Loan l WHERE l.id = :loanId"
         )
 })
 public class Loan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -31,7 +31,7 @@ public class Loan {
     }
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "idVillager", nullable = false)
     private Villager idVillager;
 
     public Villager getIdVillager() {

@@ -8,8 +8,6 @@ public interface LoaningService {
 
     Collection<Loan> getAllLoans();
 
-    void acceptLoan(int loanId);
-
-    void declineLoan(int loanId);
+    void acceptLoan(int loanId, String status);
 
 }

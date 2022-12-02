@@ -67,6 +67,8 @@ public class CamelRoutes extends RouteBuilder {
                 .to("jms:queue:purchaseCounter")
 
         ;
+        from("jms:queue:"+jmsPrefix+"loanAccept")
+                .log("loan: ${body}");
 
         from("jms:queue:purchaseReceipt")
                 .bean(productService, "purchaseProducts(${body}, ${headers.idVillager})")

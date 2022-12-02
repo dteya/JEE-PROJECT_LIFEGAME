@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.LoanStatus;
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 import fr.pantheonsorbonne.ufr27.miage.service.LoaningService;
 
@@ -24,13 +25,14 @@ public class LoanResource {
     @Path("{loanId}/accept")
     @PUT
     public void acceptLoan(@PathParam("loanId") int loanId) {
-        loaningService.acceptLoan(loanId);
+        System.out.println(loanId);
+        loaningService.acceptLoan(loanId, LoanStatus.ACCEPTED.toString());
     }
 
     @Path("{loanId}/decline")
     @PUT
     public void declineLoan(@PathParam("loanId") int loanId) {
-        loaningService.declineLoan(loanId);
+        loaningService.acceptLoan(loanId, LoanStatus.DECLINED.toString());
     }
 
 }

@@ -8,8 +8,6 @@ public interface LoanDAO {
 
     Collection<Loan> getAllLoans();
 
-    void acceptLoan(int loanId);
-
-    void declineLoan(int loanId);
+    Loan acceptLoan(int loanId, String status);
 
 }

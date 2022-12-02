@@ -6,6 +6,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 @ApplicationScoped
@@ -19,19 +20,14 @@ public class LoanDAOImpl implements LoanDAO {
         return em.createNamedQuery("Loan.findAll", Loan.class).getResultList();
     }
 
+    @Transactional
     @Override
-    public void acceptLoan(int loanId) {
-        em.createNamedQuery("Loan.updateStatus", Loan.class)
-                .setParameter("loanStatus", LoanStatus.ACCEPTED)
+    public Loan acceptLoan(int loanId, String status) {
+        Loan loan = em.createNamedQuery("Loan.findOne", Loan.class)
                 .setParameter("loanId", loanId)
-                .executeUpdate();
-    }
+                .getSingleResult();
+        loan.setLoanStatus(status);
 
-    @Override
-    public void declineLoan(int loanId) {
-        em.createNamedQuery("Loan.updateStatus", Loan.class)
-                .setParameter("loanStatus", LoanStatus.DECLINED)
-                .setParameter("loanId", loanId)
-                .executeUpdate();
+        return loan;
     }
 }

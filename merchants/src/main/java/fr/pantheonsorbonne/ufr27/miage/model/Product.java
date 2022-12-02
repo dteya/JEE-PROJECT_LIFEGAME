@@ -3,9 +3,11 @@ package fr.pantheonsorbonne.ufr27.miage.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
+@Table(name = "Product")
 public class Product {
     @Id
     @Column(name = "Id", nullable = false)

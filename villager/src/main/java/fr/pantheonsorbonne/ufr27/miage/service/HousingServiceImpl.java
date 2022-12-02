@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.HousingDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.VillagerDAO;
+import fr.pantheonsorbonne.ufr27.miage.exception.InsufficientFundsException;
 
 public class HousingServiceImpl implements HousingService {
 
@@ -13,13 +14,14 @@ public class HousingServiceImpl implements HousingService {
     VillagerDAO villagerDAO;
 
     @Override
-    public Boolean upgradeHouse(int IdVillager, int lvlVillager){
-        int amount = housingDAO.getMountantBankAccount(IdVillager);
+    public Boolean upgradeHouse(int idVillager, int lvlVillager) throws InsufficientFundsException {
+        int amount = housingDAO.getAmountBankAccount(idVillager);
         lvlVillager = villagerDAO.getLvlVillager(lvlVillager);
         if (amount >= priceHouse * (lvlVillager + 1)){
-            villagerDAO.updateLvlVillager(IdVillager);
+            villagerDAO.updateLvlVillager(idVillager);
             CapacityHouse = CapacityHouse * (lvlVillager +1);
+            return true;
         }
-    return false;
+        throw new InsufficientFundsException(idVillager);
     }
 }

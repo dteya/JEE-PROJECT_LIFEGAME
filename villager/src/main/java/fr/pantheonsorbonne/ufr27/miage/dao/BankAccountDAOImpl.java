@@ -56,4 +56,14 @@ public class BankAccountDAOImpl implements BankAccountDAO {
                 .executeUpdate();
     }
 
+
+    @Override
+    @Transactional
+    public boolean creditBankAccount(int villagerId, int amount) {
+        em.createQuery("update BankAccount b set b.balance = b.balance + :amount where b.owner.id = :villagerId")
+                .setParameter("amount", amount)
+                .setParameter("villagerId", villagerId)
+                .executeUpdate();
+        return true;
+    }
 }

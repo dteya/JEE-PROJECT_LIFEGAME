@@ -1,27 +1,34 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
+@Table(name = "Loan")
+
+@NamedQueries({
+        @NamedQuery(
+                name="Loan.findAll",
+                query="SELECT l FROM Loan l"
+        ),
+        @NamedQuery(
+                name="Loan.findOne",
+                query="SELECT l FROM Loan l WHERE l.id = :loanId"
+        ),
+        @NamedQuery(
+                name="Loan.findByVillager",
+                query="SELECT l FROM Loan l WHERE l.idVillager.id = :villagerId"
+        ),
+        @NamedQuery(
+                name="Loan.findByVillagerStatus",
+                query="SELECT l FROM Loan l WHERE l.idVillager.id = :villagerId AND l.loanStatus = :status"
+        )
+})
 public class Loan {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
-    @Column(name = "loanAmount")
-    private Integer loanAmount;
-
-    @Size(max = 255)
-    @Column(name = "loanStatus")
-    private String loanStatus;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idVillager", nullable = false)
-    private Villager idVillager;
 
     public Integer getId() {
         return id;
@@ -31,21 +38,9 @@ public class Loan {
         this.id = id;
     }
 
-    public Integer getLoanAmount() {
-        return loanAmount;
-    }
-
-    public void setLoanAmount(Integer loanAmount) {
-        this.loanAmount = loanAmount;
-    }
-
-    public String getLoanStatus() {
-        return loanStatus;
-    }
-
-    public void setLoanStatus(String loanStatus) {
-        this.loanStatus = loanStatus;
-    }
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idVillager", nullable = false)
+    private Villager idVillager;
 
     public Villager getIdVillager() {
         return idVillager;
@@ -55,4 +50,25 @@ public class Loan {
         this.idVillager = idVillager;
     }
 
+    @Column(name = "loanAmount")
+    private Integer loanAmount;
+
+    public Integer getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(Integer loanAmount) {
+        this.loanAmount = loanAmount;
+    }
+
+    @Column(name = "loanStatus")
+    private String loanStatus;
+
+    public String getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(String loanStatus) {
+        this.loanStatus = loanStatus;
+    }
 }

@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.camel.VillagersGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.BankAccountDAO;
+import fr.pantheonsorbonne.ufr27.miage.dto.Loan;
 import fr.pantheonsorbonne.ufr27.miage.dto.Pension;
 import fr.pantheonsorbonne.ufr27.miage.dto.Tax;
 import fr.pantheonsorbonne.ufr27.miage.model.Villager;
@@ -37,6 +38,11 @@ public class BankingServiceImpl implements BankingService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void creditBankAccount(int villagerId, Loan loan) {
+        bankAccountDAO.creditBankAccount(villagerId, loan.getLoanAmount());
     }
 
     @Override

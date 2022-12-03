@@ -4,6 +4,7 @@ import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
 import fr.pantheonsorbonne.ufr27.miage.service.HousingService;
 import fr.pantheonsorbonne.ufr27.miage.service.HousingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.ProductService;
+import fr.pantheonsorbonne.ufr27.miage.service.LoaningService;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Expression;
@@ -34,6 +35,9 @@ public class CamelRoutes extends RouteBuilder {
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.mailAppPassword")
     String mailAppPassword;
 
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.villagerId")
+    Integer villagerId;
+
     @Inject
     BankingService bankingService;
 
@@ -42,6 +46,9 @@ public class CamelRoutes extends RouteBuilder {
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.villagerId")
     Integer idVillager;
+
+    @Inject
+    LoaningService loaningService;
 
     @Inject
     CamelContext camelContext;
@@ -68,7 +75,15 @@ public class CamelRoutes extends RouteBuilder {
 
         ;
         from("jms:queue:"+jmsPrefix+"loanAccept")
-                .log("loan: ${body}");
+                .log("loan: ${body}")
+                .choice()
+                .when(header("villagerId").isEqualTo(villagerId))
+                .setHeader("accept", method(loaningService, "updateLoan(${body})"))
+                .end()
+                .choice()
+                .when(header("accept").isEqualTo(true))
+                .bean(bankingService, "creditBankAccount(${headers.villagerId}, ${body})")
+                .end();
 
         from("jms:queue:purchaseReceipt")
                 .bean(productService, "purchaseProducts(${body}, ${headers.idVillager})")

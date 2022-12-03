@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.LoanStatus;
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 import fr.pantheonsorbonne.ufr27.miage.service.LoaningService;
 import org.apache.camel.CamelContext;
@@ -22,17 +23,15 @@ public class LoanGateway {
     @Inject
     CamelContext camelContext;
 
-    public void emitLoanResponse(Loan loan) {
+    public void emitLoanRequest(Loan loan) {
         try(ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeader(
-                    "jms:queue:"+jmsPrefix+"loanAccept",
+            producerTemplate.sendBody(
+                    "jms:queue:"+jmsPrefix+"loanRequest",
                     new fr.pantheonsorbonne.ufr27.miage.dto.Loan(
                             loan.getLoanAmount(),
-                            loan.getLoanStatus(),
+                            LoanStatus.WAITING.toString(),
                             loan.getId()
-                    ),
-                    "villagerId",
-                    loan.getIdVillager().getId()
+                    )
             );
         } catch (IOException e) {
             throw new RuntimeException(e);

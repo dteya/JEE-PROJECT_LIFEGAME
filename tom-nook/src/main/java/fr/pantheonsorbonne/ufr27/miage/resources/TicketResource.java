@@ -1,8 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
-import fr.pantheonsorbonne.ufr27.miage.model.Ticket;
-import fr.pantheonsorbonne.ufr27.miage.service.TicketingService;
-
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.LoanStatus;
+import fr.pantheonsorbonne.ufr27.miage.exception.CannotUpdateLoanException.LoanAlreadyProcessedException;
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -22,10 +23,13 @@ public class LoanDAOImpl implements LoanDAO {
 
     @Transactional
     @Override
-    public Loan acceptLoan(int loanId, String status) {
+    public Loan acceptLoan(int loanId, String status) throws LoanAlreadyProcessedException {
         Loan loan = em.createNamedQuery("Loan.findOne", Loan.class)
                 .setParameter("loanId", loanId)
                 .getSingleResult();
+        if(!loan.getLoanStatus().equals(LoanStatus.WAITING.toString())) {
+            throw new LoanAlreadyProcessedException(loanId);
+        }
         loan.setLoanStatus(status);
 
         return loan;

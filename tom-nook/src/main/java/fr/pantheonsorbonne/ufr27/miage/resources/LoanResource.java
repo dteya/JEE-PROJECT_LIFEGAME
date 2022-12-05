@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.LoanStatus;
+import fr.pantheonsorbonne.ufr27.miage.exception.CannotUpdateLoanException.LoanAlreadyProcessedException;
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 import fr.pantheonsorbonne.ufr27.miage.service.LoaningService;
 
@@ -24,14 +25,14 @@ public class LoanResource {
 
     @Path("{loanId}/accept")
     @PUT
-    public void acceptLoan(@PathParam("loanId") int loanId) {
+    public void acceptLoan(@PathParam("loanId") int loanId) throws LoanAlreadyProcessedException {
         System.out.println(loanId);
         loaningService.acceptLoan(loanId, LoanStatus.ACCEPTED.toString());
     }
 
     @Path("{loanId}/decline")
     @PUT
-    public void declineLoan(@PathParam("loanId") int loanId) {
+    public void declineLoan(@PathParam("loanId") int loanId) throws LoanAlreadyProcessedException {
         loaningService.acceptLoan(loanId, LoanStatus.DECLINED.toString());
     }
 

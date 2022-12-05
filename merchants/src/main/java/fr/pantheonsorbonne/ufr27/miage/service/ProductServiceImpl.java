@@ -59,20 +59,15 @@ public class ProductServiceImpl implements ProductService {
         return merchandise;
     }
 
-    public void saveProduct(Product product) {
-        productDAO.saveProduct(product);
-    }
-
     @Override
     public Product createProduct() {
-
         String randomName = Name.randomName();
         String randomShape = Shape.randomForme();
         String randomColor = Color.randomColor();
         int randPrice = rand.nextInt(maxPrice - minPrice + 1) + minPrice;
         int randLevel = rand.nextInt(maxLevel - minLevel + 1) + minLevel;
-
         Product product = new Product(randomName, randomShape, randomColor, randLevel, randPrice);
+        productDAO.saveProduct(product);
         return product;
     }
 }

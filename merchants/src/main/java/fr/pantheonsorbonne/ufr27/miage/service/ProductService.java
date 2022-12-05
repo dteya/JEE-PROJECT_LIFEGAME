@@ -5,7 +5,5 @@ import java.util.Collection;
 public interface ProductService {
     Collection<Product> publishProducts();
 
-    void saveProduct(Product product);
-
     Product createProduct();
 }

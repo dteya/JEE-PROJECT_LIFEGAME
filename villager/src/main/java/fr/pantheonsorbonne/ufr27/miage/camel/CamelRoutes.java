@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.ExpiredTransitionalTicketException;
 import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
+import fr.pantheonsorbonne.ufr27.miage.service.ProductService;
 import org.apache.camel.CamelContext;
 import org.apache.camel.CamelExecutionException;
 import org.apache.camel.Exchange;
@@ -21,10 +22,13 @@ public class CamelRoutes extends RouteBuilder {
     String jmsPrefix;
 
     @Inject
-    BookingGateway bookingHandler;
+    BankingService bankingService;
 
     @Inject
-    BankingService bankingService;
+    ProductService productService;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.villagerId")
+    Integer idVillager;
 
     @Inject
     CamelContext camelContext;
@@ -40,15 +44,15 @@ public class CamelRoutes extends RouteBuilder {
 
         ;
 
+        from ("jms:topic:merchandise")
+                .setHeader("idVillager", constant(idVillager))
+                .setBody(method(productService, "scavengeMerchandise(${body}, ${headers.idVillager})"))
+                .to("jms:queue:purchaseCounter")
+        ;
+
+        from("jms:queue:purchaseReceipt")
+                .bean(productService, "purchaseProducts(${body}, ${headers.idVillager})");
 
     }
 
-    private static class ExpiredTransitionalTicketProcessor implements Processor {
-        @Override
-        public void process(Exchange exchange) throws Exception {
-            //https://camel.apache.org/manual/exception-clause.html
-            CamelExecutionException caused = (CamelExecutionException) exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Throwable.class);
-            exchange.getMessage().setBody(((ExpiredTransitionalTicketException) caused.getCause()).getExpiredTicketId());
-        }
-    }
 }

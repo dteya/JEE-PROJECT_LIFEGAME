@@ -24,9 +24,20 @@ public class CamelRoutes extends RouteBuilder {
 
         camelContext.setTracing(true);
 
-        from("scheduler://foo?delay=5000")
+        from("scheduler://productGen?delay=30000")
                 .bean(productService, "createProduct()")
                 .log("Product created");
+
+        from("scheduler://productPub?delay=30000")
+                .bean(productService, "publishProducts()")
+                .log("Merchandise update")
+                .to("jms:topic:merchandise");
+
+        from("jms:queue:purchaseCounter")
+                .setBody(method(productService, "validatePurchase(${body}, ${headers.idVillager})"))
+                .log("Purchase validated for villager ${headers.idVillager} replying to ${headers}")
+                .to("jms:queue:purchaseReceipt")
+        ;
 
     }
 

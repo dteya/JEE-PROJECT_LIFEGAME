@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bankId", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @NotNull

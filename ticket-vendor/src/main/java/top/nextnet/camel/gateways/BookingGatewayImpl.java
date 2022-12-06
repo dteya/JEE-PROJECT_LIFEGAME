@@ -1,13 +1,11 @@
 package top.nextnet.camel.gateways;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.Booking;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
 import java.io.IOException;
 
 @ApplicationScoped

@@ -1,6 +1,5 @@
 package top.nextnet.camel.gateways;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.ETicket;
 import top.nextnet.cli.UserInterface;
 
 import javax.enterprise.context.ApplicationScoped;

@@ -1,28 +1,35 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.model.Product;
+import fr.pantheonsorbonne.ufr27.miage.dto.Product;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Random;
 
+@ApplicationScoped
 public class ProductDAOImpl implements ProductDAO{
 
-    Random rand = new Random();
-    int minPrice = 20;
-    int maxPrice = 200;
-    int minLevel = 1;
-    int maxLevel = 3;
-
-    int Price = rand.nextInt(maxPrice - minPrice + 1) + minPrice;
-    int Level = rand.nextInt(maxLevel - minLevel + 1) + minLevel;
+    @PersistenceContext(name = "mysql")
+    EntityManager em;
 
     @Override
-    public Boolean publishProduct(Product product) {
-        return null;
+    @Transactional
+    public void saveProduct(Product product) {
+        fr.pantheonsorbonne.ufr27.miage.model.Product newProduct = new fr.pantheonsorbonne.ufr27.miage.model.Product();
+        newProduct.setName(product.getName());
+        newProduct.setColor(product.getColor());
+        newProduct.setShape(product.getShape());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setLevel(product.getLevel());
+        em.persist(newProduct);
+        em.flush();
     }
 
     @Override
-    public Collection<Product> getAllProducts() {
-        return null;
+    public Collection<fr.pantheonsorbonne.ufr27.miage.model.Product> getAllProducts() {
+        return em.createQuery("select p from Product p").getResultList();
     }
 }

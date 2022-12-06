@@ -1,8 +1,5 @@
 package top.nextnet.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.Booking;
-import fr.pantheonsorbonne.ufr27.miage.dto.CancelationNotice;
-import fr.pantheonsorbonne.ufr27.miage.dto.ETicket;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;

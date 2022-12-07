@@ -21,4 +21,11 @@ public class BankAccountDAOImpl implements BankAccountDAO {
                 .executeUpdate();
         return true;
     }
+
+    @Override
+    @Transactional
+    public int getAmountBankAccount(int idVillager) {
+        return (Integer) em.createQuery("Select s.balance from BankAccount s where s.owner.id = :idVillager ")
+                .setParameter("idVillager", idVillager).getSingleResult();
+    }
 }

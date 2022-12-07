@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.Random;
 
 @ApplicationScoped
 public class ProductDAOImpl implements ProductDAO{
@@ -29,7 +28,23 @@ public class ProductDAOImpl implements ProductDAO{
     }
 
     @Override
+    @Transactional
+    public void remove(Product product) {
+        em.createQuery("delete from Product p where p.name = :pName and p.color = :pColor and p.level = :pLevel and p.shape = :pShape and p.price = :pPrice")
+                .setParameter("pName", product.getName())
+                .setParameter("pColor", product.getColor())
+                .setParameter("pPrice", product.getPrice())
+                .setParameter("pLevel", product.getLevel())
+                .setParameter("pShape", product.getShape())
+                .executeUpdate()
+        ;
+
+    }
+
+
+    @Override
+    @Transactional
     public Collection<fr.pantheonsorbonne.ufr27.miage.model.Product> getAllProducts() {
-        return em.createQuery("select p from Product p").getResultList();
+        return em.createQuery("select p from fr.pantheonsorbonne.ufr27.miage.model.Product p").getResultList();
     }
 }

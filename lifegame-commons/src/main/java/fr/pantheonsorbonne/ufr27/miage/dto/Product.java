@@ -1,6 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
 
     String name;
     String shape;

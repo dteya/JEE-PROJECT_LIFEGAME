@@ -52,7 +52,7 @@ public class CamelRoutes extends RouteBuilder {
     public void configure() throws Exception {
         camelContext.setTracing(true);
 
-
+/*
         from("direct:cli")//
                 .marshal().json()//, "onBookedResponseReceived"
                 .to("jms:" + jmsPrefix + "booking?exchangePattern=InOut")//
@@ -96,7 +96,7 @@ public class CamelRoutes extends RouteBuilder {
                 .log("cancellation notice ${body} ${headers}")
                 .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=")
                 .bean(eCommerce, "showErrorMessage");
-
+*/
 
     }
 }

@@ -4,5 +4,8 @@ public interface BankAccountDAO {
 
     boolean creditBankAccount(int amount);
 
-    int getAmountBankAccount(int idVillager);
+    boolean debitBankAccount(int amount, int idVillager);
+
+    int getBalance(int idVillager);
+
 }

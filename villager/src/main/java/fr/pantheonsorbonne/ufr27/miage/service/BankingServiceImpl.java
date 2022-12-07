@@ -16,4 +16,17 @@ public class BankingServiceImpl implements BankingService {
     public void creditBankAccount(Pension pension) {
         bankAccountDAO.creditBankAccount(pension.getAmount());
     }
+
+    @Override
+    public void debitBankAccount(int amount, int idVillager) {
+        bankAccountDAO.debitBankAccount(amount, idVillager);
+    }
+
+    @Override
+    public boolean sufficientBalance(int amount, int idVillager) {
+        if (amount <= bankAccountDAO.getBalance(idVillager)) {
+            return true;
+        }
+        return false;
+    }
 }

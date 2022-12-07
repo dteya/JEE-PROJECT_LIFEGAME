@@ -4,8 +4,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
 
 @ApplicationScoped
 public class BankAccountDAOImpl implements BankAccountDAO {
@@ -24,8 +22,19 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 
     @Override
     @Transactional
-    public int getAmountBankAccount(int idVillager) {
-        return (Integer) em.createQuery("Select s.balance from BankAccount s where s.owner.id = :idVillager ")
-                .setParameter("idVillager", idVillager).getSingleResult();
+    public boolean debitBankAccount(int amount, int idVillager) {
+        em.createQuery("update BankAccount b set b.balance = b.balance - :amount where b.owner.id = :idVillager")
+                .setParameter("amount", amount)
+                .setParameter("idVillager", idVillager)
+                .executeUpdate();
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public int getBalance(int idVillager) {
+        return (Integer) em.createQuery("select b.balance from BankAccount b where b.owner.id = :idVillager")
+                .setParameter("idVillager", idVillager)
+                .getSingleResult();
     }
 }

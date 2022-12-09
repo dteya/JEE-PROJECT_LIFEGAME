@@ -36,7 +36,7 @@ public class CamelRoutes extends RouteBuilder {
     String mailAppPassword;
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.villagerId")
-    Integer villagerId;
+    Integer idVillager;
 
     @Inject
     BankingService bankingService;
@@ -77,7 +77,7 @@ public class CamelRoutes extends RouteBuilder {
         from("jms:queue:"+jmsPrefix+"loanAccept")
                 .log("loan: ${body}")
                 .choice()
-                .when(header("villagerId").isEqualTo(villagerId))
+                .when(header("villagerId").isEqualTo(idVillager))
                 .setHeader("accept", method(loaningService, "updateLoan(${body})"))
                 .end()
                 .choice()

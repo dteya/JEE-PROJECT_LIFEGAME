@@ -44,9 +44,6 @@ public class CamelRoutes extends RouteBuilder {
     @Inject
     ProductService productService;
 
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.villagerId")
-    Integer idVillager;
-
     @Inject
     LoaningService loaningService;
 

@@ -34,6 +34,9 @@ public class ProductServiceImpl implements ProductService {
     @Inject
     InventoryDAO inventoryDAO;
 
+    @Inject
+    HousingService housingService;
+
     @Override
     public boolean findLikedProduct(Product product, int idVillager) {
         Villager villager = villagerDAO.getVillager(idVillager);
@@ -49,6 +52,12 @@ public class ProductServiceImpl implements ProductService {
                 else { System.out.println("Villager " + idVillager + " doesn't have enough money for purchase"); }
             }
             else { System.out.println("Villager " + idVillager + " doesn't like this" + product.getName()); }
+        }
+        else { System.out.println("Villager " + idVillager + " doesn't have enough space to purchase an item");
+            Boolean res = housingService.upgradeHouse(idVillager);
+            if (res = false)
+                System.out.println("Villager " + idVillager + " doesn't have enough money for purchase");
+
         }
         return false;
     }

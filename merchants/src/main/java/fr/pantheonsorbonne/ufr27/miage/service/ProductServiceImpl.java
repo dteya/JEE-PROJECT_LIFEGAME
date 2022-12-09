@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     final int minPrice = 30;
     final int maxPrice = 500;
     final int minLevel = 1;
-    final int maxLevel = 1;
+    final int maxLevel = 3;
 
     @Inject
     ProductDAO productDAO;

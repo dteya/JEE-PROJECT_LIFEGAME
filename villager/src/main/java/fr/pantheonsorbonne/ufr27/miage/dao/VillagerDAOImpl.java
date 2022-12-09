@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 @ApplicationScoped
-public class VillagerDAOImpl implements VillagerDAO{
+public class VillagerDAOImpl implements VillagerDAO {
 
     @PersistenceContext(name = "mysql")
     EntityManager em;
@@ -19,6 +19,10 @@ public class VillagerDAOImpl implements VillagerDAO{
                 .setParameter("idVillager", idVillager)
                 .executeUpdate();
         return true;
+
+
+
+    }
 
     @Override
     @Transactional

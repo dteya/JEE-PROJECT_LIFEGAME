@@ -18,6 +18,13 @@ public class VillagerServiceImpl implements VillagerService {
     public Collection<Villager> listVillager() {
         return villagerDAO.listAllVillager();
     }
+
+    @Override
+    public Boolean upgradeVillagerLvl(fr.pantheonsorbonne.ufr27.miage.dto.Villager villager) {
+        villagerDAO.upgradeVillagerLvl(villager.getId());
+        return true;
+    }
+
 }
 
 

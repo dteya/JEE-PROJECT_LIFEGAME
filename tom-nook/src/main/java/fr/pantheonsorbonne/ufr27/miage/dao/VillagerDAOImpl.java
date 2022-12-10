@@ -17,4 +17,12 @@ public class VillagerDAOImpl implements VillagerDAO{
     public Collection<Villager> listAllVillager() {
         return em.createQuery("SELECT v from Villager v").getResultList();
     }
+
+    @Override
+    public boolean upgradeVillagerLvl(int idVillager) {
+        em.createQuery("update Villager v set v.level = v.level +1 where v.id = :idVillager")
+                .setParameter("idVillager", idVillager)
+                .executeUpdate();
+        return true;
+    }
 }

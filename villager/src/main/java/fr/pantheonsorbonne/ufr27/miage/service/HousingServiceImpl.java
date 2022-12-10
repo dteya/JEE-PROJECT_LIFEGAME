@@ -31,6 +31,6 @@ public class HousingServiceImpl implements HousingService {
             inventoryDAO.resetInventory(idVillager);
             return true;
         }
-        return null;
+        return false;
     }
 }

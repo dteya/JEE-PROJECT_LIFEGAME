@@ -9,6 +9,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
 @Path("bank")
 public class BankRessource {
@@ -18,11 +19,12 @@ public class BankRessource {
 
     @Path("/pension/{value}")
     @POST
-    public void emitPension(@PathParam("value") int pensionValue) throws NegativeOrZeroPensionException {
+    public Response emitPension(@PathParam("value") int pensionValue) {
         if (pensionValue <= 0) {
-            throw new NegativeOrZeroPensionException(pensionValue);
+           return Response.status(Response.Status.BAD_REQUEST).build();
         }
             bankingService.emitPension(pensionValue);
+        return Response.status(Response.Status.OK).build();
     }
 
 

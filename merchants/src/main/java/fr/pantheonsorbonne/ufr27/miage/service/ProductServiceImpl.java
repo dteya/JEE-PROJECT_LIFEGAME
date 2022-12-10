@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     //, bleu , noir, jaune, orange, blanc, rose
-    enum Color {rouge, bleu;
+    enum Color {rouge;
         private static final Random RandomColor = new Random();
 
         public static String randomColor()  {

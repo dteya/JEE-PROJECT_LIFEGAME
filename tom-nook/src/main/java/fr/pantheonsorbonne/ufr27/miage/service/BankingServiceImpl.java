@@ -15,4 +15,8 @@ public class BankingServiceImpl implements BankingService{
     public void emitPension(int amount) {
         bankingGateway.emitPension(amount);
     }
+
+    @Override
+    public void collectTax() { bankingGateway.collectTax();
+    }
 }

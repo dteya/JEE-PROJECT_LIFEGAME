@@ -18,6 +18,7 @@ public class VillagerServiceImpl implements VillagerService {
     public Collection<Villager> listVillager() {
         return villagerDAO.listAllVillager();
     }
+
 }
 
 

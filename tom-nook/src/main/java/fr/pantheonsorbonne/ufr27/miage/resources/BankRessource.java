@@ -25,5 +25,10 @@ public class BankRessource {
             bankingService.emitPension(pensionValue);
     }
 
+    @Path("/tax")
+    @POST
+    public void collectTax(){
+        bankingService.collectTax();
+    }
 
 }

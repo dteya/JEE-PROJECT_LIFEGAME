@@ -1,7 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
+import fr.pantheonsorbonne.ufr27.miage.camel.VillagersGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.BankAccountDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.Pension;
+import fr.pantheonsorbonne.ufr27.miage.dto.Tax;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -11,6 +13,8 @@ public class BankingServiceImpl implements BankingService {
 
     @Inject
     BankAccountDAO bankAccountDAO;
+
+    VillagersGateway villagersGateway;
 
     @Override
     public void creditBankAccount(Pension pension) {
@@ -28,5 +32,11 @@ public class BankingServiceImpl implements BankingService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void deductTax(Tax tax) {
+
+        villagersGateway.sendVillagers(bankAccountDAO.collectTax(tax.getAmountTax()));
     }
 }

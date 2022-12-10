@@ -32,4 +32,5 @@ public class VillagerDAOImpl implements VillagerDAO {
                 .getSingleResult();
 
     }
+
 }

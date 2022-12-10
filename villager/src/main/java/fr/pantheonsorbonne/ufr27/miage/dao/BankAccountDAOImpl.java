@@ -1,9 +1,12 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
+import fr.pantheonsorbonne.ufr27.miage.model.Villager;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Collection;
 
 @ApplicationScoped
 public class BankAccountDAOImpl implements BankAccountDAO {
@@ -37,4 +40,18 @@ public class BankAccountDAOImpl implements BankAccountDAO {
                 .setParameter("idVillager", idVillager)
                 .getSingleResult();
     }
+
+    @Override
+    @Transactional
+    public Collection<Integer> collectTax(int amount) {
+        em.createQuery("update BankAccount b set b.balance = b.balance - :amount")
+                .setParameter("amount", amount)
+                .executeUpdate();
+        Collection<Integer> poorVillager = em.createQuery("select b.owner.id from BankAccount b where b.balance < 0")
+                        .getResultList();
+        em.createQuery("UPDATE BankAccount b set b.balance = 0 where b.balance < 0")
+                .executeUpdate();
+        return poorVillager;
+    }
+
 }

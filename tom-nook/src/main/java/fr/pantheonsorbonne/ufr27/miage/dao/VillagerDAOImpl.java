@@ -17,4 +17,5 @@ public class VillagerDAOImpl implements VillagerDAO{
     public Collection<Villager> listAllVillager() {
         return em.createQuery("SELECT v from Villager v").getResultList();
     }
+
 }

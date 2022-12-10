@@ -79,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
                 likedProducts.add(product);
             }
         }
+        if (likedProducts.size() == 0) {return null;}
         return new Merchandise(likedProducts);
     }
 

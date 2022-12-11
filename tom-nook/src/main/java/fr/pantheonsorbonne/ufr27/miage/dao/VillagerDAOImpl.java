@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.Villager;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 @ApplicationScoped
@@ -16,5 +17,13 @@ public class VillagerDAOImpl implements VillagerDAO{
     @Override
     public Collection<Villager> listAllVillager() {
         return em.createQuery("SELECT v from Villager v").getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void levelUpVillager(int idVillager) {
+        em.createQuery("update Villager v set v.level = v.level +1 where v.id = :idVillager")
+                .setParameter("idVillager", idVillager)
+                .executeUpdate();
     }
 }

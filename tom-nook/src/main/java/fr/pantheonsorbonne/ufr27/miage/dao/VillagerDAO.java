@@ -6,4 +6,6 @@ import java.util.Collection;
 
 public interface VillagerDAO {
     Collection<Villager> listAllVillager();
+
+    void levelUpVillager(int idVillager);
 }

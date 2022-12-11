@@ -1,6 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
+import fr.pantheonsorbonne.ufr27.miage.service.HousingService;
+import fr.pantheonsorbonne.ufr27.miage.service.HousingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.ProductService;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -43,6 +45,9 @@ public class CamelRoutes extends RouteBuilder {
 
     @Inject
     CamelContext camelContext;
+
+    @Inject
+    HousingService housingService;
 
     @Override
     public void configure() throws Exception {
@@ -103,5 +108,6 @@ public class CamelRoutes extends RouteBuilder {
 
 
     }
+
 
 }

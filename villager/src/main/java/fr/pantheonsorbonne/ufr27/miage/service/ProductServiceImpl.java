@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean findLikedProduct(Product product, int idVillager) {
         Villager villager = villagerDAO.getVillager(idVillager);
-        if (inventoryService.sufficientSpace(idVillager)) {
+        if (inventoryService.sufficientSpace(idVillager, 1)) {
             Wishlist wishlist = wishlistDAO.getWishlist(idVillager);
             System.out.println("Villager" + idVillager + " has enough space");
             if (wishlist.getShape().equals(product.getShape()) && Objects.equals(wishlist.getColor(), product.getColor()) && villager.getLevel() == product.getLevel()) {
@@ -51,13 +51,12 @@ public class ProductServiceImpl implements ProductService {
                 }
                 else { System.out.println("Villager " + idVillager + " doesn't have enough money for purchase"); }
             }
-            else { System.out.println("Villager " + idVillager + " doesn't like this" + product.getName()); }
+            else { System.out.println("Villager " + idVillager + " doesn't like this " + product.getName()); }
         }
-        else {
-            System.out.println("Villager " + idVillager + " doesn't have enough space to purchase an item");
-            Boolean res = housingService.upgradeHouse(idVillager);
-            if (res = false)
-                System.out.println("Villager " + idVillager + " doesn't have enough money for purchase");
+        else { System.out.println("Villager " + idVillager + " doesn't have enough space to purchase an item");
+
+            if (!housingService.upgradeHouse(idVillager))
+                System.out.println("Villager " + idVillager + " needs to ask for loan");
 
         }
         return false;
@@ -65,6 +64,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void purchaseProducts(Merchandise merchandise, int idVillager) {
+
         for (Product product : merchandise.getMerchandise()) {
             inventoryDAO.addToInventory(idVillager);
             bankingService.debitBankAccount(product.getPrice(), idVillager);
@@ -73,13 +73,32 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Merchandise scavengeMerchandise(Merchandise merchandise, int idVillager) {
+        Villager villager = villagerDAO.getVillager(idVillager);
         Collection<Product> likedProducts = new ArrayList<>();
+        int purchaseTotal = 0;
+
         for(Product product : merchandise.getMerchandise()) {
             if(this.findLikedProduct(product, idVillager)) {
                 likedProducts.add(product);
             }
         }
-        if (likedProducts.size() == 0) {return null;}
+
+
+
+        while(!bankingService.sufficientBalance(purchaseTotal, idVillager)
+                || !inventoryService.sufficientSpace(idVillager, likedProducts.size())) {
+            Product mostExpensiveItem = (Product) likedProducts.toArray()[0];
+
+            for (Product product : likedProducts)  {
+                purchaseTotal=+product.getPrice();
+                if (product.getPrice() > mostExpensiveItem.getPrice()) {
+                    mostExpensiveItem = product;
+                }
+            }
+
+            likedProducts.remove(mostExpensiveItem);
+        }
+
         return new Merchandise(likedProducts);
     }
 

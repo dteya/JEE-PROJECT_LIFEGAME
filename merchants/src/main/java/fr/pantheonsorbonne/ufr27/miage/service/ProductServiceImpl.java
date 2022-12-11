@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     //, bleu , noir, jaune, orange, blanc, rose
-    enum Color {rouge, bleu;
+    enum Color {rouge;
         private static final Random RandomColor = new Random();
 
         public static String randomColor()  {
@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     final int minPrice = 30;
     final int maxPrice = 500;
     final int minLevel = 1;
-    final int maxLevel = 3;
+    final int maxLevel = 2;
 
     @Inject
     ProductDAO productDAO;
@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
         int randPrice = rand.nextInt(maxPrice - minPrice + 1) + minPrice;
         int randLevel = rand.nextInt(maxLevel - minLevel + 1) + minLevel;
         Product product = new Product(randomName, randomShape, randomColor, randLevel, randPrice);
-        System.out.println("Merchant has created " +product.getName()+ " "+product.getColor()+" "+product.getShape());
+        System.out.println("Merchant has created " +product.getName()+" "+product.getColor()+" "+product.getShape());
         productDAO.saveProduct(product);
         return product;
     }

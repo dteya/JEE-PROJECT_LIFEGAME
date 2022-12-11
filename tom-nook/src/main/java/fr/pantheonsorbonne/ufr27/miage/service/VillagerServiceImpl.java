@@ -1,11 +1,11 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.VillagerDAO;
-import fr.pantheonsorbonne.ufr27.miage.exception.VillagerNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.model.Villager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 @ApplicationScoped
@@ -20,8 +20,9 @@ public class VillagerServiceImpl implements VillagerService {
     }
 
     @Override
-    public Boolean upgradeVillagerLvl(fr.pantheonsorbonne.ufr27.miage.dto.Villager villager) {
-        villagerDAO.upgradeVillagerLvl(villager.getId());
+    @Transactional
+    public Boolean levelUpVillager(fr.pantheonsorbonne.ufr27.miage.dto.Villager villager) {
+        villagerDAO.levelUpVillager(villager.getId());
         return true;
     }
 

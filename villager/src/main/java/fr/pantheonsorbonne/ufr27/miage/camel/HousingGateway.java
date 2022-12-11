@@ -15,9 +15,9 @@ public class HousingGateway {
     @Inject
     CamelContext camelContext;
 
-    public void upgradeHouse(int idVillager, String name, int level){
+    public void upgradeHouse(int idVillager){
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBody("jms:queue:upgrade-level", new Villager(idVillager, name, level));
+            producerTemplate.sendBody("jms:queue:upgrade-level", new Villager(idVillager));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

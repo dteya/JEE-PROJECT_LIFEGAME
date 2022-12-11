@@ -19,10 +19,10 @@ public class InventoryServiceImpl implements InventoryService {
 
 
     @Override
-    public boolean sufficientSpace(int idVillager) {
+    public boolean sufficientSpace(int idVillager, int input) {
         Villager villager = villagerDAO.getVillager(idVillager);
         Inventory inventory = inventoryDAO.getInventory(idVillager);
-        if (inventory.getInventoryCapacity() + 1 <= villager.getLevel() * 5) {
+        if (inventory.getInventoryCapacity() + input <= villager.getLevel() * 5) {
             return true;
         }
 

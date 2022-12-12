@@ -60,7 +60,7 @@ public class CamelRoutes extends RouteBuilder {
 
         ;
 
-       from ("jms:topic:merchandise")
+        from("jms:topic:merchandise")
                 .setHeader("idVillager", constant(idVillager))
                 .setBody(method(productService, "scavengeMerchandise(${body}, ${headers.idVillager})"))
                 .choice().when(body().isNotNull())
@@ -71,34 +71,28 @@ public class CamelRoutes extends RouteBuilder {
         from("jms:queue:purchaseReceipt")
                 .bean(productService, "purchaseProducts(${body}, ${headers.idVillager})")
                 .marshal().json()
+                .to("pdf:create")
+                .log("receipt : ${headers}")
+                .marshal().pgp("./miage-2021-jee-project/villager/target/CryptingKey.asc", "Merchant <lifegamemerchants@gmail.com>")
+                .to("file:target/data?filename=Receipt.pdf.pgp")
+        ;
+
+        from("file:target/data")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
 
-                        exchange.getIn().setHeader("protection-policy", ProtectionPolicy.class);
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("to", "diditeya2@gmail.com");
+                        exchange.getMessage().setHeader("from", "lifegamemerchant@gmail.com");
+                        exchange.getMessage().setBody(simple("Please find attached the receipt for your purchase"));
+                        exchange.getMessage().setHeader("subject", "Receipt for purchase");
+                        AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
+                        attMsg.addAttachment("Receipt.pdf.pgp", new DataHandler(new FileDataSource(new File("target/data/Receipt.pdf.pgp"))));
                     }
                 })
-                .to("pdf:create")
-                .log("receipt : ${headers}")
-                .to("file:target/data?filename=Receipt.pdf")
+                .to("smtps:smtp.gmail.com:465??username=lifegamemerchant@gmail.com&password=" + mailAppPassword)
         ;
-
-        from("file:target/data")
-         .process(new Processor() {
-            @Override
-            public void process(Exchange exchange) throws Exception {
-
-                exchange.getMessage().setHeaders(new HashMap<>());
-                exchange.getMessage().setHeader("to", "diditeya2@gmail.com");
-                exchange.getMessage().setHeader("from", "lifegamemerchant@gmail.com");
-                exchange.getMessage().setBody(simple("Please find attached the receipt for your purchase"));
-                exchange.getMessage().setHeader("subject", "Receipt for purchase");
-                AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
-                attMsg.addAttachment("Receipt.pdf", new DataHandler(new FileDataSource(new File("target/data/Receipt.pdf"))));
-            }
-        })
-                .to("smtps:smtp.gmail.com:465??username=lifegamemerchant@gmail.com&password="+ mailAppPassword);
-
 
         from("jms:topic:tax")
                 .log("tax: ${headers}")

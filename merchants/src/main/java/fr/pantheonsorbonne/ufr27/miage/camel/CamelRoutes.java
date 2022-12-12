@@ -28,6 +28,7 @@ public class CamelRoutes extends RouteBuilder {
                 .bean(productService, "createProduct()")
                 .log("Product created");
 
+
         from("scheduler://productPub?delay=30000")
                 .bean(productService, "publishProducts()")
                 .log("Merchandise update")

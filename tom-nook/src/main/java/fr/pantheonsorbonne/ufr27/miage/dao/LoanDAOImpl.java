@@ -21,6 +21,7 @@ public class LoanDAOImpl implements LoanDAO {
     VillagerDAO villagerDAO;
 
     @Override
+    @Transactional
     public Collection<Loan> getAllLoans() {
         return em.createNamedQuery("Loan.findAll", Loan.class).getResultList();
     }
@@ -40,6 +41,7 @@ public class LoanDAOImpl implements LoanDAO {
     }
 
     @Override
+    @Transactional
     public void createLoan(int amount, int villagerId) {
         Loan loan = new Loan();
         loan.setLoanAmount(amount);

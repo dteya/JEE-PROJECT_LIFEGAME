@@ -17,6 +17,8 @@ import java.util.Objects;
 @ApplicationScoped
 public class ProductServiceImpl implements ProductService {
 
+    final int priceHouse = 4000;
+
     @Inject
     BankingService bankingService;
 
@@ -34,6 +36,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Inject
     HousingService housingService;
+
+    @Inject
+    LoaningService loaningService;
 
     @Override
     public boolean findLikedProduct(Product product, int idVillager) {
@@ -53,9 +58,10 @@ public class ProductServiceImpl implements ProductService {
         }
         else { System.out.println("Villager " + idVillager + " doesn't have enough space to purchase an item");
 
-            if (!housingService.upgradeHouse(idVillager))
+            if (!housingService.upgradeHouse(idVillager)) {
                 System.out.println("Villager " + idVillager + " needs to ask for loan");
-
+                loaningService.emitLoanRequest(idVillager, (villager.getLevel() + 1) * priceHouse);
+            }
         }
         return false;
     }

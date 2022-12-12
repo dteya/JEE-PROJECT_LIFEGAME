@@ -13,9 +13,6 @@ import java.io.IOException;
 @ApplicationScoped
 public class LoanGateway {
 
-    @Inject
-    LoaningService loaningService;
-
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
     String jmsPrefix;
 
@@ -29,7 +26,8 @@ public class LoanGateway {
                     new fr.pantheonsorbonne.ufr27.miage.dto.Loan(
                             loan.getLoanAmount(),
                             loan.getLoanStatus(),
-                            loan.getId()
+                            loan.getId(),
+                            loan.getIdVillager().getId()
                     ),
                     "villagerId",
                     loan.getIdVillager().getId()

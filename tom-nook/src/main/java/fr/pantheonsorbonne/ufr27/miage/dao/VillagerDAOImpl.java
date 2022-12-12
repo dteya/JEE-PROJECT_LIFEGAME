@@ -15,6 +15,7 @@ public class VillagerDAOImpl implements VillagerDAO{
     EntityManager em;
 
     @Override
+    @Transactional
     public Collection<Villager> listAllVillager() {
         return em.createQuery("SELECT v from Villager v").getResultList();
     }
@@ -38,6 +39,7 @@ public class VillagerDAOImpl implements VillagerDAO{
 
 
     @Override
+    @Transactional
     public Villager getVillager(int villagerId) {
         return (Villager) em.createQuery("SELECT v FROM Villager v WHERE id = :villagerId")
                 .setParameter("villagerId", villagerId)

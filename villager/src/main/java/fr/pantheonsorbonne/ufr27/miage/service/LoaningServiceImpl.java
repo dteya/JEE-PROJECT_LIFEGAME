@@ -32,7 +32,7 @@ public class LoaningServiceImpl implements LoaningService {
 
     @Override
     public void emitLoanRequest(int villagerId, int amount) {
-        if(loanDAO.hasWaitingLoan(villagerId)) {
+        if(!loanDAO.hasWaitingLoan(villagerId)) {
             Loan loan = loanDAO.createLoan(amount, villagerDAO.getVillager(villagerId));
             loanGateway.emitLoanRequest(loan);
         }

@@ -11,7 +11,6 @@ public class BankingServiceImpl implements BankingService{
     @Inject
     BankingGateway bankingGateway;
 
-
     public void emitPension(int amount) {
         bankingGateway.emitPension(amount);
     }

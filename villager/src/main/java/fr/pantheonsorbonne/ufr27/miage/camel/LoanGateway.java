@@ -30,7 +30,8 @@ public class LoanGateway {
                     new fr.pantheonsorbonne.ufr27.miage.dto.Loan(
                             loan.getLoanAmount(),
                             LoanStatus.WAITING.toString(),
-                            loan.getId()
+                            loan.getId(),
+                            loan.getIdVillager().getId()
                     )
             );
         } catch (IOException e) {

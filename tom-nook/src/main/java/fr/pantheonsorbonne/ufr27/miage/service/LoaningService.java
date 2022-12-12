@@ -11,4 +11,6 @@ public interface LoaningService {
 
     void acceptLoan(int loanId, String status) throws LoanAlreadyProcessedException;
 
+    void createLoan(fr.pantheonsorbonne.ufr27.miage.dto.Loan loan);
+
 }

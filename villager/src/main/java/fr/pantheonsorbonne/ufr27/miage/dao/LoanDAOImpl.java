@@ -34,7 +34,7 @@ public class LoanDAOImpl implements LoanDAO {
 
     @Transactional
     @Override
-    public void createLoan(int amount, Villager villager) {
+    public Loan createLoan(int amount, Villager villager) {
         Loan loan = new Loan();
         loan.setLoanAmount(amount);
         loan.setIdVillager(villager);
@@ -42,6 +42,8 @@ public class LoanDAOImpl implements LoanDAO {
 
         em.persist(loan);
         em.flush();
+
+        return loan;
     }
 
     @Override

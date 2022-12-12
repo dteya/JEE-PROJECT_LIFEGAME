@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.camel.LoanGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.LoanDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.VillagerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.LoanStatus;
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 
@@ -16,6 +17,9 @@ public class LoaningServiceImpl implements LoaningService {
     LoanDAO loanDAO;
 
     @Inject
+    VillagerDAO villagerDAO;
+
+    @Inject
     LoanGateway loanGateway;
 
     @Inject
@@ -27,8 +31,11 @@ public class LoaningServiceImpl implements LoaningService {
     }
 
     @Override
-    public void emitLoanRequest() {
-
+    public void emitLoanRequest(int villagerId, int amount) {
+        if(loanDAO.hasWaitingLoan(villagerId)) {
+            Loan loan = loanDAO.createLoan(amount, villagerDAO.getVillager(villagerId));
+            loanGateway.emitLoanRequest(loan);
+        }
     }
 
     @Override

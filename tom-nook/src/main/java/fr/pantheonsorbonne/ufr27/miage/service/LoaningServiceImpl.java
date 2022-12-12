@@ -29,4 +29,9 @@ public class LoaningServiceImpl implements LoaningService {
         Loan loan = loanDAO.acceptLoan(loanId, status);
         loanGateway.emitLoanResponse(loan);
     }
+
+    @Override
+    public void createLoan(fr.pantheonsorbonne.ufr27.miage.dto.Loan loan) {
+        loanDAO.createLoan(loan.getLoanAmount(), loan.getVillagerId());
+    }
 }

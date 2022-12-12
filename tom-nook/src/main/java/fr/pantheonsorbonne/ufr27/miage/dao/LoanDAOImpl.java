@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.exception.CannotUpdateLoanException.LoanA
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -15,6 +16,9 @@ public class LoanDAOImpl implements LoanDAO {
 
     @PersistenceContext
     EntityManager em;
+
+    @Inject
+    VillagerDAO villagerDAO;
 
     @Override
     public Collection<Loan> getAllLoans() {
@@ -33,5 +37,16 @@ public class LoanDAOImpl implements LoanDAO {
         loan.setLoanStatus(status);
 
         return loan;
+    }
+
+    @Override
+    public void createLoan(int amount, int villagerId) {
+        Loan loan = new Loan();
+        loan.setLoanAmount(amount);
+        loan.setIdVillager(villagerDAO.getVillager(villagerId));
+        loan.setLoanStatus(LoanStatus.WAITING.toString());
+
+        em.persist(loan);
+        em.flush();
     }
 }

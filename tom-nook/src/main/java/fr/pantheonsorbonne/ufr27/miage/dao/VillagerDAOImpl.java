@@ -36,4 +36,11 @@ public class VillagerDAOImpl implements VillagerDAO{
     }
 
 
+
+    @Override
+    public Villager getVillager(int villagerId) {
+        return (Villager) em.createQuery("SELECT v FROM Villager v WHERE id = :villagerId")
+                .setParameter("villagerId", villagerId)
+                .getSingleResult();
+    }
 }

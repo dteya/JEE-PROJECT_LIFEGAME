@@ -8,7 +8,7 @@ public interface LoaningService {
 
     Collection<Loan> getAllLoans();
 
-    void emitLoanRequest();
+    void emitLoanRequest(int villagerId, int amount);
 
     boolean updateLoan(fr.pantheonsorbonne.ufr27.miage.dto.Loan loan);
 

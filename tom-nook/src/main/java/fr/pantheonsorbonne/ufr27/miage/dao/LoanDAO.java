@@ -11,4 +11,6 @@ public interface LoanDAO {
 
     Loan acceptLoan(int loanId, String status) throws LoanAlreadyProcessedException;
 
+    void createLoan(int amount, int villagerId);
+
 }

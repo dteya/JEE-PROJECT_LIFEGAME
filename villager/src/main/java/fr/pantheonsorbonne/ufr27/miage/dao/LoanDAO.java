@@ -11,7 +11,7 @@ public interface LoanDAO {
 
     Loan acceptLoan(int loanId, String status);
 
-    void createLoan(int amount, Villager villager);
+    Loan createLoan(int amount, Villager villager);
 
     boolean hasWaitingLoan(int villagerId);
 

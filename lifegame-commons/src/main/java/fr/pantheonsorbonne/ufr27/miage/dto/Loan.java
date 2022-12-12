@@ -10,10 +10,13 @@ public class Loan implements Serializable {
 
     int loanId;
 
-    public Loan(int loanAmount, String status, int loanId) {
+    int villagerId;
+
+    public Loan(int loanAmount, String status, int loanId, int villagerId) {
         this.loanAmount = loanAmount;
         this.status = status;
         this.loanId = loanId;
+        this.villagerId = villagerId;
     }
 
     public Loan() {
@@ -42,5 +45,13 @@ public class Loan implements Serializable {
 
     public void setLoanId(int loanId) {
         this.loanId = loanId;
+    }
+
+    public int getVillagerId() {
+        return villagerId;
+    }
+
+    public void setVillagerId(int villagerId) {
+        this.villagerId = villagerId;
     }
 }

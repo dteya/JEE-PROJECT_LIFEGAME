@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 
 
 import fr.pantheonsorbonne.ufr27.miage.exception.ExpiredTransitionalTicketException;
+import fr.pantheonsorbonne.ufr27.miage.service.LoaningService;
 import fr.pantheonsorbonne.ufr27.miage.service.VillagerService;
 import org.apache.camel.CamelContext;
 import org.apache.camel.CamelExecutionException;
@@ -22,6 +23,12 @@ public class CamelRoutes extends RouteBuilder {
     @Inject
     VillagerService villagerService;
 
+    @Inject
+    LoaningService loaningService;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
+    String jmsPrefix;
+
     @Override
     public void configure() throws Exception {
 
@@ -33,5 +40,8 @@ public class CamelRoutes extends RouteBuilder {
                 .bean(villagerService, "banVillagers(${body})");
 
 
+
+        from("jms:queue:"+jmsPrefix+"loanRequest")
+                .bean(loaningService, "createLoan(${body})");
     }
 }

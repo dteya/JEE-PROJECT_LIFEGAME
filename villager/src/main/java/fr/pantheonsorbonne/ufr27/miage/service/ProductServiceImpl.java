@@ -1,6 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.dao.BankAccountDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.InventoryDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.VillagerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.WishlistDAO;
@@ -14,7 +13,6 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ProductServiceImpl implements ProductService {
@@ -64,7 +62,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void purchaseProducts(Merchandise merchandise, int idVillager) {
-
         for (Product product : merchandise.getMerchandise()) {
             inventoryDAO.addToInventory(idVillager);
             bankingService.debitBankAccount(product.getPrice(), idVillager);
@@ -97,6 +94,10 @@ public class ProductServiceImpl implements ProductService {
             }
 
             likedProducts.remove(mostExpensiveItem);
+        }
+
+        if (likedProducts.isEmpty()) {
+            return null;
         }
 
         return new Merchandise(likedProducts);

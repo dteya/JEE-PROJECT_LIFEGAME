@@ -8,4 +8,6 @@ public interface VillagerDAO {
     Collection<Villager> listAllVillager();
 
     void levelUpVillager(int idVillager);
+
+    void banVillager(int idVillager);
 }

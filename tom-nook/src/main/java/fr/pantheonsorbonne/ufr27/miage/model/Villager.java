@@ -10,6 +10,9 @@ public class Villager {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(name = "bannedStatus")
+    private Boolean bannedStatus;
+
     public Integer getId() {
         return id;
     }
@@ -23,6 +26,14 @@ public class Villager {
 
     @Column(name = "level", nullable = false)
     private int level;
+
+    public Boolean getBannedStatus() {
+        return bannedStatus;
+    }
+
+    public void setBannedStatus(Boolean bannedStatus) {
+        this.bannedStatus = bannedStatus;
+    }
 
 
     public String getName() {

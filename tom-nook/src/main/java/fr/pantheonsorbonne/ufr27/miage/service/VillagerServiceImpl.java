@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.VillagerDAO;
+import fr.pantheonsorbonne.ufr27.miage.dto.Villagers;
 import fr.pantheonsorbonne.ufr27.miage.model.Villager;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -25,5 +26,19 @@ public class VillagerServiceImpl implements VillagerService {
         villagerDAO.levelUpVillager(villager.getId());
         return true;
     }
+
+    public void banVillagers(Villagers villagers) {
+        villagers.getVillagers().forEach(
+                (fr.pantheonsorbonne.ufr27.miage.dto.Villager villager) -> this.banVillager(villager.getId())
+        );
+    }
+
+    @Override
+    @Transactional
+    public void banVillager(int idVillager) {
+        villagerDAO.banVillager(idVillager);
+    }
+
+
 
 }

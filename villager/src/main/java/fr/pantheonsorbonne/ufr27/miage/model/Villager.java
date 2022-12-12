@@ -18,6 +18,17 @@ public class Villager {
     @Column(name = "level")
     private Integer level;
 
+    @Column(name = "bannedStatus")
+    private Boolean bannedStatus;
+
+    public Boolean getBannedStatus() {
+        return bannedStatus;
+    }
+
+    public void setBannedStatus(Boolean bannedStatus) {
+        this.bannedStatus = bannedStatus;
+    }
+
     public Integer getId() {
         return id;
     }

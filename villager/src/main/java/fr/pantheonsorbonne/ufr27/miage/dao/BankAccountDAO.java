@@ -12,6 +12,8 @@ public interface BankAccountDAO {
 
     int getBalance(int idVillager);
 
-    Collection<Integer> collectTax(int amount);
+    Collection<Villager> getVillagersInDebt();
+
+    void collectTax(int amount);
 
 }

@@ -60,7 +60,7 @@ public class CamelRoutes extends RouteBuilder {
 
         ;
 
-        from ("jms:topic:merchandise")
+       /* from ("jms:topic:merchandise")
                 .setHeader("idVillager", constant(idVillager))
                 .setBody(method(productService, "scavengeMerchandise(${body}, ${headers.idVillager})"))
                 .choice().when(body().isNotNull())
@@ -80,16 +80,10 @@ public class CamelRoutes extends RouteBuilder {
                 })
                 .to("pdf:create")
                 .log("receipt : ${headers}")
-                /*.process(new Processor() {
-                    @Override
-                    public void process(Exchange exchange) throws Exception {
-                        exchange.getMessage().setHeader("CamelFileName", "Receipt.pdf");
-                    }
-                })*/
                 .to("file:target/data?filename=Receipt.pdf")
-        ;
+        ;*/
 
-        from("file:target/data")
+        /*from("file:target/data")
          .process(new Processor() {
             @Override
             public void process(Exchange exchange) throws Exception {
@@ -104,7 +98,7 @@ public class CamelRoutes extends RouteBuilder {
                 attMsg.addAttachment("Receipt.pdf", new DataHandler(new FileDataSource(new File("target/data/Receipt.pdf"))));
             }
         })
-                .to("smtps:smtp.mail.yahoo.com:465??username=dteya@yahoo.com&password="+ mailAppPassword);
+                .to("smtps:smtp.mail.yahoo.com:465??username=dteya@yahoo.com&password="+ mailAppPassword);*/
 
 
         from("jms:topic:tax")

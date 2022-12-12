@@ -5,17 +5,17 @@ import java.util.Collection;
 
 public class Villagers implements Serializable {
 
-    Collection<Integer> villagers;
+    Collection<Villager> villagers;
 
-    public Villagers(Collection<Integer> villagers) {
+    public Villagers(Collection<Villager> villagers) {
         this.villagers = villagers;
     }
 
-    public Collection<Integer> getVillagers() {
+    public Collection<Villager> getVillagers() {
         return villagers;
     }
 
-    public void setVillagers(Collection<Integer> villagers) {
+    public void setVillagers(Collection<Villager> villagers) {
         this.villagers = villagers;
     }
 }

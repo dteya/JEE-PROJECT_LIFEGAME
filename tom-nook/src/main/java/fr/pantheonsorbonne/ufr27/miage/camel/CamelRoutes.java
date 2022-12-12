@@ -28,5 +28,10 @@ public class CamelRoutes extends RouteBuilder {
         camelContext.setTracing(true);
         from("jms:queue:upgrade-level")
                 .bean(villagerService, "levelUpVillager(${body})");
+
+        from("jms:queue:villagersInDebt")
+                .bean(villagerService, "banVillagers(${body})");
+
+
     }
 }

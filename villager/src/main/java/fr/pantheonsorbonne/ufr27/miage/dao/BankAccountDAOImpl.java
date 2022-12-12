@@ -43,15 +43,17 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 
     @Override
     @Transactional
-    public Collection<Integer> collectTax(int amount) {
+    public Collection<Villager> getVillagersInDebt() {
+        return (Collection<Villager>) em.createQuery("select b.owner from BankAccount b where b.balance < 0")
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void collectTax(int amount) {
         em.createQuery("update BankAccount b set b.balance = b.balance - :amount")
                 .setParameter("amount", amount)
                 .executeUpdate();
-        Collection<Integer> poorVillager = em.createQuery("select b.owner.id from BankAccount b where b.balance < 0")
-                        .getResultList();
-        em.createQuery("UPDATE BankAccount b set b.balance = 0 where b.balance < 0")
-                .executeUpdate();
-        return poorVillager;
     }
 
 }

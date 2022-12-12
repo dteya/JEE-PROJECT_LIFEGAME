@@ -90,15 +90,14 @@ public class CamelRoutes extends RouteBuilder {
 
                 exchange.getMessage().setHeaders(new HashMap<>());
                 exchange.getMessage().setHeader("to", "diditeya2@gmail.com");
-                exchange.getMessage().setHeader("from", "dteya@yahoo.com");
-                exchange.getMessage().setHeader("CamelFileName", "Receipt.pdf");
+                exchange.getMessage().setHeader("from", "lifegamemerchant@gmail.com");
                 exchange.getMessage().setBody(simple("Please find attached the receipt for your purchase"));
                 exchange.getMessage().setHeader("subject", "Receipt for purchase");
                 AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
                 attMsg.addAttachment("Receipt.pdf", new DataHandler(new FileDataSource(new File("target/data/Receipt.pdf"))));
             }
         })
-                .to("smtps:smtp.mail.yahoo.com:465??username=dteya@yahoo.com&password="+ mailAppPassword);
+                .to("smtps:smtp.gmail.com:465??username=lifegamemerchant@gmail.com&password="+ mailAppPassword);
 
 
         from("jms:topic:tax")

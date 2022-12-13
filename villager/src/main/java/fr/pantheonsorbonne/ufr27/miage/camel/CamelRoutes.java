@@ -73,7 +73,7 @@ public class CamelRoutes extends RouteBuilder {
                 .bean(bankingService, "creditBankAccount(${headers.villagerId}, ${body})")
                 .end();
 
-        from("jms:queue:purchaseReceipt")
+        from("jms:queue:"+jmsPrefix+"purchaseReceipt")
                 .bean(productService, "purchaseProducts(${body}, ${headers.idVillager})")
                 .marshal().json()
                 .process(new Processor() {

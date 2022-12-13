@@ -13,14 +13,6 @@ import javax.persistence.*;
         @NamedQuery(
                 name="Loan.findOne",
                 query="SELECT l FROM Loan l WHERE l.id = :loanId"
-        ),
-        @NamedQuery(
-                name="Loan.findByVillager",
-                query="SELECT l FROM Loan l WHERE l.idVillager.id = :villagerId"
-        ),
-        @NamedQuery(
-                name="Loan.findByVillagerStatus",
-                query="SELECT l FROM Loan l WHERE l.idVillager.id = :villagerId AND l.loanStatus = :status"
         )
 })
 public class Loan {

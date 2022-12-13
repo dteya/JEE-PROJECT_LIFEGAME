@@ -25,6 +25,9 @@ public class HousingServiceImpl implements HousingService {
     InventoryDAO inventoryDAO;
 
     @Inject
+    BankingService bankingService;
+
+    @Inject
     HousingGateway housingGateway;
 
     @Override
@@ -32,9 +35,11 @@ public class HousingServiceImpl implements HousingService {
     public Boolean upgradeHouse(int idVillager) {
         int amount = bankAccountDAO.getBalance(idVillager);
         int lvlVillager = villagerDAO.getVillager(idVillager).getLevel();
-        if (amount >= priceHouse * (lvlVillager + 1)){
+        int houseUpgrade = priceHouse * (lvlVillager + 1);
+        if (amount >= houseUpgrade){
             villagerDAO.updateLvlVillager(idVillager);
             inventoryDAO.resetInventory(idVillager);
+            bankingService.debitBankAccount(houseUpgrade, idVillager);
             housingGateway.upgradeHouse(idVillager);
             return true;
         }

@@ -16,4 +16,6 @@ public interface BankAccountDAO {
 
     void collectTax(int amount);
 
+
+    boolean creditBankAccount(int villagerId, int amount);
 }

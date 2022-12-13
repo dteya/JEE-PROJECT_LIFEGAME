@@ -10,4 +10,6 @@ public interface VillagerDAO {
     void levelUpVillager(int idVillager);
 
     void banVillager(int idVillager);
+
+    Villager getVillager(int villagerId);
 }

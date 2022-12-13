@@ -8,8 +8,11 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Expression;
 import org.apache.camel.Processor;
+import org.apache.camel.attachment.Attachment;
 import org.apache.camel.attachment.AttachmentMessage;
+import org.apache.camel.attachment.DefaultAttachment;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.file.GenericFile;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.apache.pdfbox.pdmodel.encryption.ProtectionPolicy;
 
@@ -19,8 +22,11 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.apache.camel.component.pdf.PdfHeaderConstants.PROTECTION_POLICY_HEADER_NAME;
 
@@ -73,12 +79,14 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .to("pdf:create")
                 .log("receipt : ${headers}")
-                .marshal().pgp("./miage-2021-jee-project/villager/target/CryptingKey.asc", "Merchant <lifegamemerchants@gmail.com>")
-                .to("file:target/data?filename=Receipt.pdf.pgp")
-        ;
+                .marshal().pgp("file:/Users/teyadidi/miage-2021-jee-project/villager/target/CryptedKey.asc", "Merchant <lifegamemerchant@gmail.com>")
+                .to("file:target/crypted?filename=Receipt.pdf.pgp")
+                .unmarshal().pgp("file:/Users/teyadidi/miage-2021-jee-project/villager/target/SecretCryptedKey.asc", "Merchant <lifegamemerchant@gmail.com>", "teya2002")
+                .to("file:target/uncrypted?filename=Receipt");
 
-        from("file:target/data")
-                .process(new Processor() {
+        from("file:target/uncrypted")
+                .process(new Processor()
+                {
                     @Override
                     public void process(Exchange exchange) throws Exception {
 
@@ -88,7 +96,8 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setBody(simple("Please find attached the receipt for your purchase"));
                         exchange.getMessage().setHeader("subject", "Receipt for purchase");
                         AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
-                        attMsg.addAttachment("Receipt.pdf.pgp", new DataHandler(new FileDataSource(new File("target/data/Receipt.pdf.pgp"))));
+                        attMsg.addAttachment("Receipt.pdf", new DataHandler(new FileDataSource(new File("target/uncrypted/Receipt"))));
+
                     }
                 })
                 .to("smtps:smtp.gmail.com:465??username=lifegamemerchant@gmail.com&password=" + mailAppPassword)

@@ -16,6 +16,7 @@ public class BankingServiceImpl implements BankingService{
     }
 
     @Override
-    public void collectTax() { bankingGateway.collectTax();
+    public void collectTax() {
+        bankingGateway.collectTax();
     }
 }

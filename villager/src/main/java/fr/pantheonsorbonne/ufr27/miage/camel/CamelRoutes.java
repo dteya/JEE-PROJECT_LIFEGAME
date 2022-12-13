@@ -1,13 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
-import fr.pantheonsorbonne.ufr27.miage.service.HousingService;
-import fr.pantheonsorbonne.ufr27.miage.service.HousingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.ProductService;
 import fr.pantheonsorbonne.ufr27.miage.service.LoaningService;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
-import org.apache.camel.Expression;
 import org.apache.camel.Processor;
 import org.apache.camel.attachment.AttachmentMessage;
 import org.apache.camel.builder.RouteBuilder;
@@ -20,10 +17,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import java.io.File;
-import java.io.OutputStream;
 import java.util.HashMap;
-
-import static org.apache.camel.component.pdf.PdfHeaderConstants.PROTECTION_POLICY_HEADER_NAME;
 
 @ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
@@ -50,27 +44,24 @@ public class CamelRoutes extends RouteBuilder {
     @Inject
     CamelContext camelContext;
 
-    @Inject
-    HousingService housingService;
-
     @Override
     public void configure() throws Exception {
 
         camelContext.setTracing(true);
 
-        from("jms:topic:pension")
+        from("jms:topic:"+jmsPrefix+"pension")
                 .log("pension: ${headers}")
                 .bean(bankingService, "creditBankAccount(${body})")
 
         ;
 
-       from ("jms:topic:merchandise")
+       from ("jms:topic:"+jmsPrefix+"merchandise")
                 .setHeader("idVillager", constant(idVillager))
                 .setBody(method(productService, "scavengeMerchandise(${body}, ${headers.idVillager})"))
                 .choice().when(body().isNotNull())
-                .to("jms:queue:purchaseCounter")
-
+                .to("jms:queue:"+jmsPrefix+"purchaseCounter")
         ;
+
         from("jms:queue:"+jmsPrefix+"loanAccept")
                 .log("loan: ${body}")
                 .choice()
@@ -113,8 +104,7 @@ public class CamelRoutes extends RouteBuilder {
         })
                 .to("smtps:smtp.gmail.com:465??username=lifegamemerchant@gmail.com&password="+ mailAppPassword);
 
-
-        from("jms:topic:tax")
+        from("jms:topic:"+jmsPrefix+"tax")
                 .log("tax: ${headers}")
                 .bean(bankingService, "deductTax(${body})");
     }

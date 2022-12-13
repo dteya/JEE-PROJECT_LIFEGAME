@@ -38,7 +38,4 @@ public class VillagerServiceImpl implements VillagerService {
     public void banVillager(int idVillager) {
         villagerDAO.banVillager(idVillager);
     }
-
-
-
 }

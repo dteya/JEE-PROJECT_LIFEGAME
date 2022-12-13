@@ -1,5 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +13,8 @@ public class Villager {
     private Integer id;
 
     @Column(name = "bannedStatus")
-    private Boolean bannedStatus;
+    @ColumnDefault("false")
+    private Boolean bannedStatus = false;
 
     public Integer getId() {
         return id;

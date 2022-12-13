@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
+import fr.pantheonsorbonne.ufr27.miage.model.BankAccount;
 import fr.pantheonsorbonne.ufr27.miage.model.Villager;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -17,9 +18,10 @@ public class BankAccountDAOImpl implements BankAccountDAO {
     @Override
     @Transactional
     public boolean creditBankAccount(int amount) {
-        em.createQuery("update BankAccount b set b.balance = b.balance + :amount")
-                .setParameter("amount", amount)
-                .executeUpdate();
+        Collection<BankAccount> bankAccounts = em.createNamedQuery("BankAccount.findAll", BankAccount.class).getResultList();
+        for(BankAccount bankAccount : bankAccounts) {
+            bankAccount.setBalance(bankAccount.getBalance() + amount);
+        }
         return true;
     }
 
@@ -51,19 +53,20 @@ public class BankAccountDAOImpl implements BankAccountDAO {
     @Override
     @Transactional
     public void collectTax(int amount) {
-        em.createQuery("update BankAccount b set b.balance = b.balance - :amount")
-                .setParameter("amount", amount)
-                .executeUpdate();
+        Collection<BankAccount> bankAccounts = em.createNamedQuery("BankAccount.findAll", BankAccount.class).getResultList();
+        for(BankAccount bankAccount : bankAccounts) {
+            bankAccount.setBalance(bankAccount.getBalance() - amount);
+        }
     }
 
 
     @Override
     @Transactional
     public boolean creditBankAccount(int villagerId, int amount) {
-        em.createQuery("update BankAccount b set b.balance = b.balance + :amount where b.owner.id = :villagerId")
-                .setParameter("amount", amount)
+        BankAccount bankAccount = em.createNamedQuery("BankAccount.findByVillagerId", BankAccount.class)
                 .setParameter("villagerId", villagerId)
-                .executeUpdate();
+                .getSingleResult();
+        bankAccount.setBalance(bankAccount.getBalance() + amount);
         return true;
     }
 }

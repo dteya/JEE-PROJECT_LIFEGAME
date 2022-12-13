@@ -47,11 +47,12 @@ public class LoanDAOImpl implements LoanDAO {
     }
 
     @Override
+    @Transactional
     public boolean hasWaitingLoan(int villagerId) {
         return em.createNamedQuery("Loan.findByVillagerStatus", Loan.class)
                 .setParameter("villagerId", villagerId)
                 .setParameter("status", LoanStatus.WAITING.toString())
-                .getResultList().size() == 0;
+                .getResultList().size() != 0;
     }
 
 

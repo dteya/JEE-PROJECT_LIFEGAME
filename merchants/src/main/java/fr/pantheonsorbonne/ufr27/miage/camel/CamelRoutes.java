@@ -4,6 +4,7 @@ import fr.pantheonsorbonne.ufr27.miage.service.ProductService;
 import org.apache.camel.*;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.support.DefaultComponent;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,6 +19,8 @@ public class CamelRoutes extends RouteBuilder {
     @Inject
     ProductService productService;
 
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
+    String jmsPrefix;
 
     @Override
     public void configure() throws Exception {
@@ -31,12 +34,12 @@ public class CamelRoutes extends RouteBuilder {
         from("scheduler://productPub?delay=30000")
                 .bean(productService, "publishProducts()")
                 .log("Merchandise update")
-                .to("jms:topic:merchandise");
+                .to("jms:topic:"+jmsPrefix+"merchandise");
 
-        from("jms:queue:purchaseCounter")
+        from("jms:queue:"+jmsPrefix+"purchaseCounter")
                 .setBody(method(productService, "validatePurchase(${body}, ${headers.idVillager})"))
                 .log("Purchase validated for villager ${headers.idVillager} replying to ${headers}")
-                .to("jms:queue:purchaseReceipt")
+                .to("jms:queue:"+jmsPrefix+"purchaseReceipt")
         ;
 
     }

@@ -36,5 +36,4 @@ public class LoanGateway {
             throw new RuntimeException(e);
         }
     }
-
 }

@@ -1,5 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
@@ -19,7 +21,8 @@ public class Villager {
     private Integer level;
 
     @Column(name = "bannedStatus")
-    private Boolean bannedStatus;
+    @ColumnDefault("false")
+    private Boolean bannedStatus = false;
 
     public Boolean getBannedStatus() {
         return bannedStatus;

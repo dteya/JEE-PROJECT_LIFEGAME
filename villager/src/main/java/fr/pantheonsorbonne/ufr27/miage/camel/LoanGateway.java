@@ -2,7 +2,6 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.LoanStatus;
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
-import fr.pantheonsorbonne.ufr27.miage.service.LoaningService;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -13,9 +12,6 @@ import java.io.IOException;
 
 @ApplicationScoped
 public class LoanGateway {
-
-    @Inject
-    LoaningService loaningService;
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
     String jmsPrefix;

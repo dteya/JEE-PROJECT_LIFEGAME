@@ -12,9 +12,12 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class BankingServiceImpl implements BankingService {
+
+    private static final Logger LOGGER = Logger.getLogger("logger");
 
     @Inject
     BankAccountDAO bankAccountDAO;
@@ -25,8 +28,10 @@ public class BankingServiceImpl implements BankingService {
     @Override
     public boolean sufficientBalance(int amount, int idVillager) {
         if (amount <= bankAccountDAO.getBalance(idVillager)) {
+            LOGGER.info("Villager " + idVillager + " has a sufficient balance");
             return true;
         }
+        LOGGER.info("Villager " + idVillager + " hasn't a sufficient balance");
         return false;
     }
 
@@ -38,6 +43,7 @@ public class BankingServiceImpl implements BankingService {
                 ),
                 bankAccountDAO.creditBankAccount(villagerId, loan.getLoanAmount())
         );
+        LOGGER.info("Villager " + villagerId + "has been credited of " + loan.getLoanAmount());
     }
 
     @Override
@@ -47,7 +53,10 @@ public class BankingServiceImpl implements BankingService {
                         villagerId
                 ),
                 bankAccountDAO.creditBankAccount(villagerId, pension.getAmount())
+
         );
+        LOGGER.info("Villager " + villagerId + "has received a pension of " + pension.getAmount());
+
     }
 
     @Override
@@ -64,5 +73,6 @@ public class BankingServiceImpl implements BankingService {
                 ),
                 bankAccountDAO.debitBankAccount(idVillager, tax.getAmountTax())
         );
+        LOGGER.info("Villager " + idVillager + "has been debited of " + tax.getAmountTax());
     }
 }

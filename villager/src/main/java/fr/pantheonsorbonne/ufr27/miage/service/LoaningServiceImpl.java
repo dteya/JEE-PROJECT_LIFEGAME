@@ -9,9 +9,12 @@ import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class LoaningServiceImpl implements LoaningService {
+
+    private static final Logger LOGGER = Logger.getLogger("logger");
 
     @Inject
     LoanDAO loanDAO;
@@ -35,6 +38,7 @@ public class LoaningServiceImpl implements LoaningService {
         if(!loanDAO.hasWaitingLoan(villagerId)) {
             Loan loan = loanDAO.createLoan(amount, villagerDAO.getVillager(villagerId));
             loanGateway.emitLoanRequest(loan);
+            LOGGER.info("Villager " + villagerId + " has requested an amount of " + amount);
         }
     }
 

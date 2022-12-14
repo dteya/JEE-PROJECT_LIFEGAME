@@ -9,9 +9,12 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ProductServiceImpl implements ProductService {
+
+    private static final Logger LOGGER = Logger.getLogger("logger");
 
     enum Name {table, bureau, miroir, etagere, chaise, tableau, tapis, porte, armoire, canape;
         private static final Random RandomName = new Random();
@@ -60,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
         productDAO.getAllProducts().forEach(
                 (fr.pantheonsorbonne.ufr27.miage.model.Product product) -> merchandise.add(new Product(product.getName(), product.getShape(), product.getColor(), product.getLevel(), product.getPrice())));
 
-
+        LOGGER.info("New merchandises are published by the merchant");
         return new Merchandise(merchandise);
     }
 
@@ -72,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
         int randPrice = rand.nextInt(maxPrice - minPrice + 1) + minPrice;
         int randLevel = rand.nextInt(maxLevel - minLevel + 1) + minLevel;
         Product product = new Product(randomName, randomShape, randomColor, randLevel, randPrice);
-        System.out.println("Merchant has created " +product.getName()+" "+product.getColor()+" "+product.getShape());
+        LOGGER.info("Merchant has created " +product.getName()+" "+product.getColor()+" "+product.getShape());
         productDAO.saveProduct(product);
         return product;
     }
@@ -80,7 +83,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Merchandise validatePurchase(Merchandise merchandise, int idVillager) {
         merchandise.getMerchandise().forEach((Product product) -> productDAO.remove(product));
-        merchandise.getMerchandise().forEach((Product product) -> System.out.println(product.getName() + " " + product.getShape() + " " + product.getColor() + " has been sold"));
+        merchandise.getMerchandise().forEach(
+                (Product product) -> LOGGER.info(
+                    product.getName() + " " + product.getShape() + " " + product.getColor() + " has been sold to Villager #" + idVillager
+                )
+        );
         return merchandise;
     }
 }

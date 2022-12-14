@@ -20,9 +20,14 @@ public class VillagersGateway {
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
     String jmsPrefix;
 
-    public void sendVillagers(Collection<Villager> villagers) {
+    public void sendVillager(Villager villager, boolean banStatus) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBody("jms:queue:"+jmsPrefix+"villagersInDebt", new Villagers(villagers));
+            producerTemplate.sendBodyAndHeader(
+                    "jms:queue:"+jmsPrefix+"villagersInDebt",
+                    villager,
+                    "banStatus",
+                    banStatus
+            );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

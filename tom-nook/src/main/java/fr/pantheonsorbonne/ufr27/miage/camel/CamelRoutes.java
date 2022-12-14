@@ -32,7 +32,7 @@ public class CamelRoutes extends RouteBuilder {
                 .bean(villagerService, "levelUpVillager(${body})");
 
         from("jms:queue:"+jmsPrefix+"villagersInDebt")
-                .bean(villagerService, "banVillagers(${body})");
+                .bean(villagerService, "banVillager(${body}, ${headers.banStatus})");
 
         from("jms:queue:"+jmsPrefix+"loanRequest")
                 .bean(loaningService, "createLoan(${body})");

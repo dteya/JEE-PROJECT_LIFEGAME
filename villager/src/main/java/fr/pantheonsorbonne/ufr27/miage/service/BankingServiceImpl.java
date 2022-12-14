@@ -5,7 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.dao.BankAccountDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.Loan;
 import fr.pantheonsorbonne.ufr27.miage.dto.Pension;
 import fr.pantheonsorbonne.ufr27.miage.dto.Tax;
-import fr.pantheonsorbonne.ufr27.miage.model.Villager;
+import fr.pantheonsorbonne.ufr27.miage.dto.Villager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,16 +23,6 @@ public class BankingServiceImpl implements BankingService {
     VillagersGateway villagersGateway;
 
     @Override
-    public void creditBankAccount(Pension pension) {
-        bankAccountDAO.creditBankAccount(pension.getAmount());
-    }
-
-    @Override
-    public void debitBankAccount(int amount, int idVillager) {
-        bankAccountDAO.debitBankAccount(amount, idVillager);
-    }
-
-    @Override
     public boolean sufficientBalance(int amount, int idVillager) {
         if (amount <= bankAccountDAO.getBalance(idVillager)) {
             return true;
@@ -42,17 +32,37 @@ public class BankingServiceImpl implements BankingService {
 
     @Override
     public void creditBankAccount(int villagerId, Loan loan) {
-        bankAccountDAO.creditBankAccount(villagerId, loan.getLoanAmount());
+        villagersGateway.sendVillager(
+                new Villager(
+                        villagerId
+                ),
+                bankAccountDAO.creditBankAccount(villagerId, loan.getLoanAmount())
+        );
+    }
+
+    @Override
+    public void creditPension(int villagerId, Pension pension) {
+        villagersGateway.sendVillager(
+                new Villager(
+                        villagerId
+                ),
+                bankAccountDAO.creditBankAccount(villagerId, pension.getAmount())
+        );
+    }
+
+    @Override
+    public void debitBankAccount(int amount, int idVillager) {
+        bankAccountDAO.debitBankAccount(idVillager, amount);
     }
 
     @Override
     @Transactional
-    public void deductTax(Tax tax) {
-        bankAccountDAO.collectTax(tax.getAmountTax());
-        Collection<fr.pantheonsorbonne.ufr27.miage.dto.Villager> villagersInDebt = new ArrayList<fr.pantheonsorbonne.ufr27.miage.dto.Villager>();
-        for (Villager villager : bankAccountDAO.getVillagersInDebt()) {
-            villagersInDebt.add(new fr.pantheonsorbonne.ufr27.miage.dto.Villager(villager.getId()));
-        }
-        villagersGateway.sendVillagers(villagersInDebt);
+    public void deductTax(Tax tax, int idVillager) {
+        villagersGateway.sendVillager(
+                new Villager(
+                        idVillager
+                ),
+                bankAccountDAO.debitBankAccount(idVillager, tax.getAmountTax())
+        );
     }
 }

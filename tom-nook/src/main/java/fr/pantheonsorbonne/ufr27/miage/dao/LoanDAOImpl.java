@@ -1,12 +1,14 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.LoanStatus;
+import fr.pantheonsorbonne.ufr27.miage.exception.CannotUpdateLoanException;
 import fr.pantheonsorbonne.ufr27.miage.exception.CannotUpdateLoanException.LoanAlreadyProcessedException;
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Collection;
@@ -28,16 +30,20 @@ public class LoanDAOImpl implements LoanDAO {
 
     @Transactional
     @Override
-    public Loan acceptLoan(int loanId, String status) throws LoanAlreadyProcessedException {
-        Loan loan = em.createNamedQuery("Loan.findOne", Loan.class)
-                .setParameter("loanId", loanId)
-                .getSingleResult();
-        if(!loan.getLoanStatus().equals(LoanStatus.WAITING.toString())) {
-            throw new LoanAlreadyProcessedException(loanId);
-        }
-        loan.setLoanStatus(status);
+    public Loan acceptLoan(int loanId, String status) throws LoanAlreadyProcessedException, CannotUpdateLoanException.LoanNotFoundException {
+        try {
+            Loan loan = em.createNamedQuery("Loan.findOne", Loan.class)
+                    .setParameter("loanId", loanId)
+                    .getSingleResult();
+            if (!loan.getLoanStatus().equals(LoanStatus.WAITING.toString())) {
+                throw new LoanAlreadyProcessedException(loanId);
+            }
+            loan.setLoanStatus(status);
 
-        return loan;
+            return loan;
+        } catch (NoResultException e) {
+            throw new CannotUpdateLoanException.LoanNotFoundException(loanId);
+        }
     }
 
     @Override

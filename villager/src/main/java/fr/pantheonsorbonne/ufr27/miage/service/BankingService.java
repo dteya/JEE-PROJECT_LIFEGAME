@@ -6,7 +6,7 @@ import fr.pantheonsorbonne.ufr27.miage.dto.Tax;
 
 public interface BankingService {
 
-    void creditBankAccount(Pension pension);
+    void creditPension(int villagerId, Pension pension);
 
     void debitBankAccount(int amount, int idVillager);
 
@@ -14,5 +14,5 @@ public interface BankingService {
 
     void creditBankAccount(int villagerId, Loan loan);
 
-    void deductTax(Tax tax);
+    void deductTax(Tax tax, int idVillager);
 }

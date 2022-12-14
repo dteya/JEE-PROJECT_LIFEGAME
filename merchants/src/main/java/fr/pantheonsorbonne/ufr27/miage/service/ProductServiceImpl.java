@@ -83,4 +83,11 @@ public class ProductServiceImpl implements ProductService {
         merchandise.getMerchandise().forEach((Product product) -> System.out.println(product.getName() + " " + product.getShape() + " " + product.getColor() + " has been sold"));
         return merchandise;
     }
+
+    @Override
+    public fr.pantheonsorbonne.ufr27.miage.model.Product getProduct(int productId){
+        return productDAO.getProduct(productId);
+
+    }
+
 }

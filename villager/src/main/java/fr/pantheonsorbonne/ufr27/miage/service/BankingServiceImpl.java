@@ -31,7 +31,7 @@ public class BankingServiceImpl implements BankingService {
             LOGGER.info("Villager " + idVillager + " has a sufficient balance");
             return true;
         }
-        LOGGER.info("Villager " + idVillager + " hasn't a sufficient balance");
+        LOGGER.info("Villager #" + idVillager + " does not have a sufficient balance");
         return false;
     }
 
@@ -43,7 +43,7 @@ public class BankingServiceImpl implements BankingService {
                 ),
                 bankAccountDAO.creditBankAccount(villagerId, loan.getLoanAmount())
         );
-        LOGGER.info("Villager " + villagerId + "has been credited of " + loan.getLoanAmount());
+        LOGGER.info("Villager #" + villagerId + " has been credited of " + loan.getLoanAmount());
     }
 
     @Override
@@ -55,7 +55,7 @@ public class BankingServiceImpl implements BankingService {
                 bankAccountDAO.creditBankAccount(villagerId, pension.getAmount())
 
         );
-        LOGGER.info("Villager " + villagerId + "has received a pension of " + pension.getAmount());
+        LOGGER.info("Villager #" + villagerId + " has received a pension of " + pension.getAmount());
 
     }
 
@@ -73,6 +73,6 @@ public class BankingServiceImpl implements BankingService {
                 ),
                 bankAccountDAO.debitBankAccount(idVillager, tax.getAmountTax())
         );
-        LOGGER.info("Villager " + idVillager + "has been debited of " + tax.getAmountTax());
+        LOGGER.info("Villager #" + idVillager + " has been debited of " + tax.getAmountTax());
     }
 }

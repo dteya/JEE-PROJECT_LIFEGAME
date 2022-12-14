@@ -39,6 +39,12 @@ public class CamelRoutes extends RouteBuilder {
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.villagerId")
     Integer idVillager;
 
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.pathToPrivateKey")
+    String pathToPrivateKey;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.pathToPublicKey")
+    String pathToPublicKey;
+
     @Inject
     BankingService bankingService;
 
@@ -91,9 +97,9 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .to("pdf:create")
                 .log("receipt : ${headers}")
-                .marshal().pgp("file:/Users/teyadidi/miage-2021-jee-project/villager/target/CryptedKey.asc", "Merchant <lifegamemerchant@gmail.com>")
+                .marshal().pgp(pathToPublicKey, "Merchant <lifegamemerchant@gmail.com>")
                 .to("file:target/crypted?filename=Receipt.pdf.pgp")
-                .unmarshal().pgp("file:/Users/teyadidi/miage-2021-jee-project/villager/target/SecretCryptedKey.asc", "Merchant <lifegamemerchant@gmail.com>", "teya2002")
+                .unmarshal().pgp(pathToPrivateKey, "Merchant <lifegamemerchant@gmail.com>", "teya2002")
                 .to("file:target/uncrypted?filename=Receipt");
 
         from("file:target/uncrypted")

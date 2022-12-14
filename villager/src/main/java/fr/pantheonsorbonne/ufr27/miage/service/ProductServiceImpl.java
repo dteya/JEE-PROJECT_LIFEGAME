@@ -13,11 +13,14 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ProductServiceImpl implements ProductService {
 
     final int priceHouse = 4000;
+
+    private static final Logger LOGGER = Logger.getLogger("logger");
 
     @Inject
     BankingService bankingService;
@@ -45,21 +48,21 @@ public class ProductServiceImpl implements ProductService {
         Villager villager = villagerDAO.getVillager(idVillager);
         if (inventoryService.sufficientSpace(idVillager, 1)) {
             Wishlist wishlist = wishlistDAO.getWishlist(idVillager);
-            System.out.println("Villager" + idVillager + " has enough space");
+            LOGGER.info("Villager" + idVillager + " has enough space");
             if (wishlist.getShape().equals(product.getShape()) && Objects.equals(wishlist.getColor(), product.getColor()) && villager.getLevel() == product.getLevel()) {
-                System.out.println("Villager " + idVillager + " likes this " + product.getName());
+                LOGGER.info("Villager " + idVillager + " likes this " + product.getName());
                 if (bankingService.sufficientBalance(product.getPrice(), idVillager)) {
-                    System.out.println("Villager " + idVillager + " has enough money to purchase this item");
+                    LOGGER.info("Villager " + idVillager + " has enough money to purchase this item");
                     return true;
                 }
-                else { System.out.println("Villager " + idVillager + " doesn't have enough money for purchase"); }
+                else { LOGGER.warning("Villager " + idVillager + " doesn't have enough money for purchase"); }
             }
-            else { System.out.println("Villager " + idVillager + " doesn't like this " + product.getName()); }
+            else { LOGGER.info("Villager " + idVillager + " doesn't like this " + product.getName()); }
         }
-        else { System.out.println("Villager " + idVillager + " doesn't have enough space to purchase an item");
+        else { LOGGER.warning("Villager " + idVillager + " doesn't have enough space to purchase an item");
 
             if (!housingService.upgradeHouse(idVillager)) {
-                System.out.println("Villager " + idVillager + " needs to ask for loan");
+                LOGGER.info("Villager " + idVillager + " needs to ask for loan");
                 loaningService.emitLoanRequest(idVillager, (villager.getLevel() + 1) * priceHouse);
             }
         }

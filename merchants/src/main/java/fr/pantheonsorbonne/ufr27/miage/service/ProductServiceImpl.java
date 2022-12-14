@@ -90,4 +90,11 @@ public class ProductServiceImpl implements ProductService {
         );
         return merchandise;
     }
+
+    @Override
+    public fr.pantheonsorbonne.ufr27.miage.model.Product getProduct(int productId){
+        return productDAO.getProduct(productId);
+
+    }
+
 }

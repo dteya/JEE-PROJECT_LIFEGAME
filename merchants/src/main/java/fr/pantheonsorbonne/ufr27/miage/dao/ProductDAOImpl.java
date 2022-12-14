@@ -47,4 +47,12 @@ public class ProductDAOImpl implements ProductDAO{
     public Collection<fr.pantheonsorbonne.ufr27.miage.model.Product> getAllProducts() {
         return em.createQuery("select p from fr.pantheonsorbonne.ufr27.miage.model.Product p").getResultList();
     }
+
+    @Override
+    @Transactional
+    public fr.pantheonsorbonne.ufr27.miage.model.Product getProduct(int productId) {
+        return (fr.pantheonsorbonne.ufr27.miage.model.Product) em.createQuery("select p from Product p where p.id = :productId")
+                .setParameter("productId", productId)
+                .getSingleResult();
+    }
 }

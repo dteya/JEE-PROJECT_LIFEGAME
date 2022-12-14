@@ -30,8 +30,9 @@ public class VillagerDAOImpl implements VillagerDAO{
 
     @Override
     @Transactional
-    public void banVillager(int idVillager) {
-        em.createQuery("update Villager v set v.bannedStatus = 1 where v.id = :idVillager")
+    public void banVillager(int idVillager, boolean banStatus) {
+        em.createQuery("update Villager v set v.bannedStatus = :banStatus where v.id = :idVillager")
+                .setParameter("banStatus", banStatus)
                 .setParameter("idVillager", idVillager)
                 .executeUpdate();
     }

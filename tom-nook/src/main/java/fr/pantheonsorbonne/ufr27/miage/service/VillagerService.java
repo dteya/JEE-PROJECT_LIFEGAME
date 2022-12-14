@@ -12,5 +12,6 @@ public interface VillagerService {
     @Transactional
     Boolean levelUpVillager(fr.pantheonsorbonne.ufr27.miage.dto.Villager villager);
 
-    void banVillager(int idVillager);
+    @Transactional
+    void banVillager(fr.pantheonsorbonne.ufr27.miage.dto.Villager villager, boolean banStatus);
 }

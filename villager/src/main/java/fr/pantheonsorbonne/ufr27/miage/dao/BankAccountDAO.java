@@ -6,16 +6,9 @@ import java.util.Collection;
 
 public interface BankAccountDAO {
 
-    boolean creditBankAccount(int amount);
-
-    boolean debitBankAccount(int amount, int idVillager);
+    boolean debitBankAccount(int idVillager, int amount);
 
     int getBalance(int idVillager);
-
-    Collection<Villager> getVillagersInDebt();
-
-    void collectTax(int amount);
-
 
     boolean creditBankAccount(int villagerId, int amount);
 }

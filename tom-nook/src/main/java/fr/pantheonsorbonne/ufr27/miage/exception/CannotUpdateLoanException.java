@@ -7,4 +7,10 @@ public class CannotUpdateLoanException extends Exception {
             super("Cannot update for Loan #" + loanId + " as it has already been updated");
         }
     }
+
+    public static class LoanNotFoundException extends Throwable {
+        public LoanNotFoundException(int loanId) {
+            super("Cannot update for Loan #" + loanId + " as it does not exist");
+        }
+    }
 }

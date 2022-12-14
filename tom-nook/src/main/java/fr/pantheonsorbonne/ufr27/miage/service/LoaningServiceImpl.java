@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.camel.LoanGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.LoanDAO;
+import fr.pantheonsorbonne.ufr27.miage.exception.CannotUpdateLoanException;
 import fr.pantheonsorbonne.ufr27.miage.exception.CannotUpdateLoanException.LoanAlreadyProcessedException;
 import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 
@@ -24,7 +25,7 @@ public class LoaningServiceImpl implements LoaningService {
     }
 
     @Override
-    public void acceptLoan(int loanId, String status) throws LoanAlreadyProcessedException {
+    public void acceptLoan(int loanId, String status) throws LoanAlreadyProcessedException, CannotUpdateLoanException.LoanNotFoundException {
         System.out.println(loanId + " " + status);
         Loan loan = loanDAO.acceptLoan(loanId, status);
         loanGateway.emitLoanResponse(loan);

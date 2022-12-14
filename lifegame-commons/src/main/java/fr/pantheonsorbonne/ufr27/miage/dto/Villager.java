@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Villager implements Serializable {
 
     int id;
+
     public Villager(int id) {
         this.id = id;
     }
@@ -16,5 +17,4 @@ public class Villager implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-
 }

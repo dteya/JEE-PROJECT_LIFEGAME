@@ -58,9 +58,15 @@ public class CamelRoutes extends RouteBuilder {
 
         from("jms:topic:"+jmsPrefix+"pension")
                 .log("pension: ${headers}")
-                .bean(bankingService, "creditBankAccount(${body})")
+                .setHeader("idVillager", constant(idVillager))
+                .bean(bankingService, "creditPension(${headers.idVillager}, ${body})")
 
         ;
+
+        from("jms:topic:"+jmsPrefix+"tax")
+                .log("tax: ${headers}")
+                .setHeader("idVillager", constant(idVillager))
+                .bean(bankingService, "deductTax(${body}, ${headers.idVillager})");
 
        from ("jms:topic:"+jmsPrefix+"merchandise")
                 .setHeader("idVillager", constant(idVillager))
@@ -108,11 +114,5 @@ public class CamelRoutes extends RouteBuilder {
                 })
                 .to("smtps:smtp.gmail.com:465??username=lifegamemerchant@gmail.com&password=" + mailAppPassword)
         ;
-
-        from("jms:topic:"+jmsPrefix+"tax")
-                .log("tax: ${headers}")
-                .bean(bankingService, "deductTax(${body})");
     }
-
-
 }

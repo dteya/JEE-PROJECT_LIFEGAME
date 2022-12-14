@@ -9,6 +9,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.Loan;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class LoaningServiceImpl implements LoaningService {
@@ -18,6 +19,8 @@ public class LoaningServiceImpl implements LoaningService {
 
     @Inject
     LoanGateway loanGateway;
+
+    private static final Logger LOGGER = Logger.getLogger("logger");
 
     @Override
     public Collection<Loan> getAllLoans() {
@@ -29,10 +32,12 @@ public class LoaningServiceImpl implements LoaningService {
         System.out.println(loanId + " " + status);
         Loan loan = loanDAO.acceptLoan(loanId, status);
         loanGateway.emitLoanResponse(loan);
+        LOGGER.info("Loan #" + loanId + " has changed to" + status);
     }
 
     @Override
     public void createLoan(fr.pantheonsorbonne.ufr27.miage.dto.Loan loan) {
         loanDAO.createLoan(loan.getLoanAmount(), loan.getVillagerId());
+        LOGGER.info("A loan request from Villager #" + loan.getVillagerId() + " of " + loan.getLoanAmount() + " has been created");
     }
 }

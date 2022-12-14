@@ -86,9 +86,9 @@ public class CamelRoutes extends RouteBuilder {
                 .to("pdf:create")
                 .log("receipt : ${headers}")
                 .marshal().pgp("file:/Users/teyadidi/miage-2021-jee-project/villager/target/CryptedKey.asc", "Merchant <lifegamemerchant@gmail.com>")
-                .to("file:target/crypted?filename=Receipt.pdf.pgp")
+                .to("file:target/crypted?filename=Receipt.pgp")
                 .unmarshal().pgp("file:/Users/teyadidi/miage-2021-jee-project/villager/target/SecretCryptedKey.asc", "Merchant <lifegamemerchant@gmail.com>", "teya2002")
-                .to("file:target/uncrypted?filename=Receipt");
+                .to("file:target/uncrypted?filename=Receipt.");
 
         from("file:target/uncrypted")
                 .process(new Processor()

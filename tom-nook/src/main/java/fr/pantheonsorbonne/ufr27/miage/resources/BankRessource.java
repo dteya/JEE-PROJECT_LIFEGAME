@@ -1,11 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
-import fr.pantheonsorbonne.ufr27.miage.exception.NegativeOrZeroPensionException;
 import fr.pantheonsorbonne.ufr27.miage.service.BankingService;
 
 import javax.inject.Inject;
-import javax.validation.constraints.NegativeOrZero;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -29,8 +26,9 @@ public class BankRessource {
 
     @Path("/tax")
     @POST
-    public void collectTax(){
+    public Response collectTax(){
         bankingService.collectTax();
+        return Response.status(Response.Status.OK).build();
     }
 
 }

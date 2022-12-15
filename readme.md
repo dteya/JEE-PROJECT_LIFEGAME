@@ -60,3 +60,5 @@ Un villageois ne peut plus acheter d’objets si son logement atteint le maximum
 ![](emitLoan.png)
 ![](listLoans.png)
 ![](acceptLoan.png)
+![](CollectTax.png)
+![](UpgradeHouse.png)

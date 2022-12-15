@@ -18,6 +18,7 @@ public class ProductDAOImpl implements ProductDAO{
     @Transactional
     public void saveProduct(Product product) {
         fr.pantheonsorbonne.ufr27.miage.model.Product newProduct = new fr.pantheonsorbonne.ufr27.miage.model.Product();
+        newProduct.setId(product.getId());
         newProduct.setName(product.getName());
         newProduct.setColor(product.getColor());
         newProduct.setShape(product.getShape());

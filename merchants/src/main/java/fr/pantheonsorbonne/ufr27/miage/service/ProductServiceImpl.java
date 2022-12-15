@@ -25,8 +25,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    //, rond, triangle, rectangle, losange
-    enum Shape {carre;
+    //, triangle, rectangle, losange
+    enum Shape {carre, rond;
         private static final Random RandomForme = new Random();
 
         public static String randomForme()  {
@@ -36,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    //, bleu , noir, jaune, orange, blanc, rose
-    enum Color {rouge;
+    //, noir, jaune, orange, blanc, rose
+    enum Color {rouge, bleu;
         private static final Random RandomColor = new Random();
 
         public static String randomColor()  {
@@ -55,13 +55,13 @@ public class ProductServiceImpl implements ProductService {
     @Inject
     ProductDAO productDAO;
 
-    
+
     @Override
     public Merchandise publishProducts() {
         Collection<Product> merchandise = new ArrayList<>();
 
         productDAO.getAllProducts().forEach(
-                (fr.pantheonsorbonne.ufr27.miage.model.Product product) -> merchandise.add(new Product(product.getName(), product.getShape(), product.getColor(), product.getLevel(), product.getPrice())));
+                (fr.pantheonsorbonne.ufr27.miage.model.Product product) -> merchandise.add(new Product(product.getId(),product.getName(), product.getShape(), product.getColor(), product.getLevel(), product.getPrice())));
 
         LOGGER.info("New merchandises are published by the merchant");
         return new Merchandise(merchandise);
@@ -74,8 +74,9 @@ public class ProductServiceImpl implements ProductService {
         String randomColor = Color.randomColor();
         int randPrice = rand.nextInt(maxPrice - minPrice + 1) + minPrice;
         int randLevel = rand.nextInt(maxLevel - minLevel + 1) + minLevel;
-        Product product = new Product(randomName, randomShape, randomColor, randLevel, randPrice);
-        LOGGER.info("Merchant has created " +product.getName()+" "+product.getColor()+" "+product.getShape());
+        int randId = rand.nextInt(5000000 - 1000 + 1) + 1000;
+        Product product = new Product(randId, randomName, randomShape, randomColor, randLevel, randPrice);
+        System.out.println("Merchant has created " +product.getName()+" "+product.getColor()+" "+product.getShape());
         productDAO.saveProduct(product);
         return product;
     }

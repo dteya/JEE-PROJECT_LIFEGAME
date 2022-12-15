@@ -19,8 +19,8 @@ public class VillagerResource {
 
     @Path("/")
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Collection<Villager> listVillager() {
+    @Produces({MediaType.APPLICATION_JSON})
+    public Collection<Villager> listVillager() throws VillagerNotFoundException {
         return villagerService.listVillager();
     }
 

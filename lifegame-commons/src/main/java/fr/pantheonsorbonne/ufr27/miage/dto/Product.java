@@ -4,14 +4,15 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
 
+    int id;
     String name;
     String shape;
     String color;
     int level;
     int price;
 
-
-    public Product(String name, String shape, String color, int level, int price) {
+    public Product(int id, String name, String shape, String color, int level, int price) {
+        this.id = id;
         this.name = name;
         this.shape = shape;
         this.color = color;
@@ -60,4 +61,11 @@ public class Product implements Serializable {
         this.price = price;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

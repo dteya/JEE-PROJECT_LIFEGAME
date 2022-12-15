@@ -18,6 +18,7 @@ public class ProductDAOImpl implements ProductDAO{
     @Transactional
     public void saveProduct(Product product) {
         fr.pantheonsorbonne.ufr27.miage.model.Product newProduct = new fr.pantheonsorbonne.ufr27.miage.model.Product();
+        newProduct.setId(product.getId());
         newProduct.setName(product.getName());
         newProduct.setColor(product.getColor());
         newProduct.setShape(product.getShape());
@@ -46,5 +47,13 @@ public class ProductDAOImpl implements ProductDAO{
     @Transactional
     public Collection<fr.pantheonsorbonne.ufr27.miage.model.Product> getAllProducts() {
         return em.createQuery("select p from fr.pantheonsorbonne.ufr27.miage.model.Product p").getResultList();
+    }
+
+    @Override
+    @Transactional
+    public fr.pantheonsorbonne.ufr27.miage.model.Product getProduct(int productId) {
+        return (fr.pantheonsorbonne.ufr27.miage.model.Product) em.createQuery("select p from Product p where p.id = :productId")
+                .setParameter("productId", productId)
+                .getSingleResult();
     }
 }

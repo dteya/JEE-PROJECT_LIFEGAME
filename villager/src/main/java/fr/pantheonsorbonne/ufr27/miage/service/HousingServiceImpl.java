@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.logging.Logger;
 
+
 @ApplicationScoped
 public class HousingServiceImpl implements HousingService {
 

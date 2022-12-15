@@ -11,4 +11,6 @@ public interface ProductDAO {
     void remove(Product product);
 
     Collection<fr.pantheonsorbonne.ufr27.miage.model.Product> getAllProducts();
+
+    fr.pantheonsorbonne.ufr27.miage.model.Product getProduct(int productId);
 }

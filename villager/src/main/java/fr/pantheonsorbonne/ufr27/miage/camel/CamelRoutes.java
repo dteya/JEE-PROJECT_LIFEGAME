@@ -97,9 +97,9 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .to("pdf:create")
                 .log("receipt : ${headers}")
-                .marshal().pgp(pathToPublicKey, "Merchant <lifegamemerchant@gmail.com>")
+                .marshal().pgp("file:"+pathToPublicKey, "Merchant <lifegamemerchant@gmail.com>")
                 .to("file:target/crypted?filename=Receipt.pdf.pgp")
-                .unmarshal().pgp(pathToPrivateKey, "Merchant <lifegamemerchant@gmail.com>", "teya2002")
+                .unmarshal().pgp("file:"+pathToPrivateKey, "Merchant <lifegamemerchant@gmail.com>", "teya2002")
                 .to("file:target/uncrypted?filename=Receipt");
 
         from("file:target/uncrypted")
